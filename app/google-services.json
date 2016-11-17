@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "323844079090",
+    "firebase_url": "https://bmstu-wifi.firebaseio.com",
+    "project_id": "bmstu-wifi",
+    "storage_bucket": "bmstu-wifi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323844079090:android:9f8602a8ff534596",
+        "android_client_info": {
+          "package_name": "ru.lionzxy.bmstuwifi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323844079090-sl366h86i4eqfl6njn0t95cdar3gl7l8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.lionzxy.bmstuwifi",
+            "certificate_hash": "7178302EAA86E528742CD7B533D0FC622F04F1E3"
+          }
+        },
+        {
+          "client_id": "323844079090-a19m28o8gnhuqbsf75q7sjc9c8cdpal7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8DSh7BWGxclWFVowZSgw3vp12WC7g_ac"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323844079090-a19m28o8gnhuqbsf75q7sjc9c8cdpal7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:padding="16dp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/logoCompany"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/logo_vk" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/logoCompany"
+        android:layout_toRightOf="@+id/logoCompany"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/nameCompany"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/about_me_vk"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/link"
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="@string/about_me_vk_link" />
+    </LinearLayout>
+</RelativeLayout>

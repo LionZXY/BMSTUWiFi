@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">BMSTU Wi-Fi</string>
+    <string name="notfication_title">Подключение к WiFi</string>
+
+    <string name="wait_ssid">Ожидание SSID…</string>
+    <string name="wait_ip">Ожидание IP… </string>
+    <string name="wait_ip_sucs">Мы дождались IP</string>
+    <string name="wait_ip_error">Превышено время ожидания IP!</string>
+    <string name="auth_err">Ошибка авторизации</string>
+    <string name="auth_conn">Инициализация подключения</string>
+    <string name="auth_open">Подключение к серверу</string>
+    <string name="auth">Авторизация в сети</string>
+    <string name="auth_send_data">Отправка данных на сервер</string>
+    <string name="auth_get_data">Получение данных</string>
+    <string name="auth_err_login">Неправильный логин и пароль</string>
+    <string name="auth_finished">Авторизация прошла успешно ^_^</string>
+
+
+    <string name="sucsesful">Успешно</string>
+    <string name="login_button_save">Сохранить</string>
+    <string name="login_button_hide">Скрыть</string>
+
+    <string name="pref_wifi">Настройки обнаружения</string>
+    <string name="pref_wifi_autoconnect">Автоматическая авторизация в сети</string>
+    <string name="pref_wifi_ip_wait">Ожидание IP адреса</string>
+    <string name="pref_wifi_ip_wait_descr">Время в секундах ожидания IP адреса. Слишком маленькое значение может привести к тому, что приложение будет аварийно завершаться, так и не дождавшись получения IP. (По умолчанию: 30)</string>
+    <string name="pref_wifi_ssid_wait">Ожидание SSID</string>
+    <string name="pref_wifi_ssid_wait_descr">Время в секундах ожидания SSID. Слишком маленькое значение может привести к тому, что приложение будет аварийно завершаться, так и не дождавшись получения SSID. (По умолчанию: 10) </string>
+    <string name="pref_wifi_check_strict">Надёжная проверка соединения</string>
+    <string name="pref_wifi_check_strict_summary">Более медленная проверка через подключение к одному из публичных серверов в интернете.</string>
+
+    <string name="pref_about">О программе</string>
+    <string name="pref_about_about">О программе</string>
+    <string name="pref_about_contact">Связаться с автором</string>
+    <string name="pref_about_contect_desct">Если возникли трудности в работе с программой или возникли сложности, пишите по одному из предложенных каналов.
+    P.S. Ну если хочется поболтать, тоже пишите :3</string>
+
+    <string name="pref_auth">Авторизация</string>
+    <string name="pref_auth_descr">Настройки, связанные с авторизацией. Данные входа и настройки алгоритма авторизации в сети</string>
+    <string name="pref_auth_login_count">Количество попыток авторизации</string>
+    <string name="pref_auth_login_count_descr">По умолчанию: 3</string>
+    <string name="pref_auth_login_changeLogin">Сменить логин и пароль</string>
+    <string name="pref_auth_login_forgetLogin">Забыть логин и пароль</string>
+    <string name="pref_auth_login_forgetLogin_toast">Логин и пароль удален</string>
+    <string name="pref_auth_login_open">Открыть окно ввода логина и пароля</string>
+
+    <string name="about_me_vk">ВКонтакте</string>
+    <string name="about_me_vk_link">https://vk.com/kulikof.nikita</string>
+    <string name="about_me_telegram">Telegram</string>
+    <string name="about_me_telegram_link">http://telegram.me/lionzxy</string>
+    <string name="about_me_4pda">4PDA</string>
+    <string name="about_me_4pda_link">http://4pda.ru/forum/index.php?showuser=2775318</string>
+    <string name="about_me_github">GitHub</string>
+    <string name="about_me_github_link">https://github.com/LionZXY</string>
+    <string name="about_me_email">E-mail</string>
+    <string name="about_me_email_link">nikita@kulikof.ru</string>
+    <string name="about_me_email_send">Отправка письма…</string>
+    <string name="about_me_email_err">У вас нет приложений для отправки письма</string>
+    <string name="login_logBtn">Войти</string>
+    <string name="login_rememberPassword">Запомнить пароль</string>
+    <string name="login_password">Пароль</string>
+    <string name="login_login">Логин</string>
+</resources>
