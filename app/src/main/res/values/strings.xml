@@ -14,6 +14,10 @@
     <string name="auth_get_data">Получение данных</string>
     <string name="auth_err_login">Неправильный логин и пароль</string>
     <string name="auth_finished">Авторизация прошла успешно ^_^</string>
+    <string name="auth_logout_start">Попытка выхода из сети…</string>
+    <string name="auth_logout_end">Вроде получилось… Но ничего гарантировать не могу</string>
+    <string name="auth_logout_error">Ошибка при выходе из сети</string>
+    <string name="auth_logout_error_session">Не получилось найти текущию сессию. Вы точно авторизовывались с помощью приложения?</string>
 
 
     <string name="sucsesful">Успешно</string>

@@ -20,11 +20,13 @@ public abstract class IAuth {
         this.logger = logger;
         this.context = context;
     }
+
     public abstract void stop();
+
     public abstract boolean registerInNetwork() throws IOException;
 
     public boolean isValidSSID(String SSID) {
-        SSID = SSID.replaceAll("\"","");
+        SSID = SSID.replaceAll("\"", "");
         for (String ssid : SSIDs)
             if (ssid.equals(SSID))
                 return true;

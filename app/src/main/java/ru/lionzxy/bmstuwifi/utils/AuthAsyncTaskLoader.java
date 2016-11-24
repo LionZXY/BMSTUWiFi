@@ -37,12 +37,12 @@ public class AuthAsyncTaskLoader extends AsyncTaskLoader<Boolean> {
         final TaskResponseWithNotification taskResponseWithNotification = new TaskResponseWithNotification(notificationWeakReference.get());
         return authTask.subscribeOnStateChange(new ITaskStateResponse() {
             @Override
-            public void onStateChange(final int stateDescribtionResId, final int stateNumber, final int stateCount) {
+            public void onStateChange(final String TAG, final int stateDescribtionResId, final int stateNumber, final int stateCount) {
                 activityWeakReference.get().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (notificationWeakReference.get() != null)
-                            taskResponseWithNotification.onStateChange(stateDescribtionResId, stateNumber, stateCount);
+                            taskResponseWithNotification.onStateChange(TAG, stateDescribtionResId, stateNumber, stateCount);
                         if (progressDialogWeakReference.get() != null) {
                             progressDialogWeakReference.get().setProgress(stateCount);
                             progressDialogWeakReference.get().setMessage(getContext().getString(stateDescribtionResId));
@@ -51,6 +51,7 @@ public class AuthAsyncTaskLoader extends AsyncTaskLoader<Boolean> {
                         }
                     }
                 });
+                Logger.getLogger().log(TAG, Logger.Level.INFO, notificationWeakReference.get().getRes().getString(stateDescribtionResId));
             }
         }).runTask();
     }

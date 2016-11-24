@@ -25,7 +25,7 @@ public class AppPreferenceActivity extends FragmentActivity {
 
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN,new Bundle());
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, new Bundle());
     }
 
     public static class AuthPreferenceFragment extends PreferenceFragment {

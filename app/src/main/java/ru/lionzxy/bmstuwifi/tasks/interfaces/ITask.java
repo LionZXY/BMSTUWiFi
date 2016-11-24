@@ -8,7 +8,6 @@ public abstract class ITask {
     private ITaskStateResponse taskStateResponse;
     private boolean isInterrupt = false;
 
-
     public void interrupt() {
         isInterrupt = true;
     }
@@ -27,7 +26,14 @@ public abstract class ITask {
 
     protected void onStateChange(int stateDescribtionResId, int stateNumber, int stateCount) {
         if (taskStateResponse != null)
-            taskStateResponse.onStateChange(stateDescribtionResId, stateNumber, stateCount);
+            taskStateResponse.onStateChange(getTag(), stateDescribtionResId, stateNumber, stateCount);
     }
 
+    protected void onStateChange(int stateDescribtionResId) {
+        onStateChange(stateDescribtionResId, 0, 0);
+    }
+
+    public String getTag() {
+        return "UNKNOWNTASK";
+    }
 }

@@ -11,6 +11,7 @@ import ru.lionzxy.bmstuwifi.tasks.interfaces.ITaskStateResponse;
  */
 
 public class WaitForIpTask extends ITask {
+    private String TAG = "WaitForIp";
     private WifiManager manager;
     private int pref_ip_wait;
 
@@ -41,5 +42,10 @@ public class WaitForIpTask extends ITask {
         }
 
         return true;
+    }
+
+    @Override
+    public String getTag() {
+        return TAG;
     }
 }

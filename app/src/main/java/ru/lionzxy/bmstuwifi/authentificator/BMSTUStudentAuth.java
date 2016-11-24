@@ -34,7 +34,7 @@ public class BMSTUStudentAuth extends IAuth {
     }
 
     @Override
-    public boolean registerInNetwork() throws IOException{
+    public boolean registerInNetwork() throws IOException {
         if (!alreadyActive) {
             alreadyActive = true;
             SecurePreferences securePreferences = new SecurePreferences(context);

@@ -7,5 +7,6 @@ package ru.lionzxy.bmstuwifi.tasks.interfaces;
 public interface ITaskStateResponse {
     public static int ERROR_STATE = -1;
     public static int INFINITE_STATES = -1; //In stateCount
-    void onStateChange(int stateDescribtionResId, int stateNumber, int stateCount);
+
+    void onStateChange(String TAG, int stateDescribtionResId, int stateNumber, int stateCount);
 }

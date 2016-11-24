@@ -109,5 +109,7 @@ public class DetectStateThread extends Thread {
         super.interrupt();
         if (currentTask != null)
             currentTask.interrupt();
+        if (notification != null)
+            notification.hide();
     }
 }

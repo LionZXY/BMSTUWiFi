@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +22,7 @@ import ru.lionzxy.bmstuwifi.App;
 import ru.lionzxy.bmstuwifi.LoginActivity_;
 import ru.lionzxy.bmstuwifi.R;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
-import ru.lionzxy.bmstuwifi.utils.ConnectionHelper;
+import ru.lionzxy.bmstuwifi.utils.Constant;
 import ru.lionzxy.bmstuwifi.utils.WiFiHelper;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -68,6 +67,7 @@ public class AuthTask extends ITask {
         }
 
         while (!isConnected() && !isInterrupt()) {
+            onStateChange(R.string.auth, count, pref_auth_login_count);
             HashMap<String, String> params = new HashMap<>();
             params.put("redirurl", "/");
             params.put("accept", "Continue");
@@ -83,19 +83,20 @@ public class AuthTask extends ITask {
                         .add("accept", "Continue")
                         .build();
                 Request request = new Request.Builder()
-                        .url("https://pfsense.bmstu.ru:8001")
+                        .url(Constant.getAuthSite(context))
                         .post(formBody)
                         .build();
 
+                onStateChange(R.string.auth_send_data, count, pref_auth_login_count);
                 Response response = client.newCall(request).execute();
                 if (response.isSuccessful()) {
-                    onStateChange(R.string.auth_finished, 0, 0);
-                    Matcher matcher = Pattern.compile("NAME=\"logout_id\" TYPE=\"hidden\" VALUE=\"([^\"]+)\">").matcher(response.body().string());
+                    onStateChange(R.string.auth_finished);
+                    Matcher matcher = Pattern.compile(Constant.REG_EXP).matcher(response.body().string());
                     if (matcher.find()) {
                         settings.edit().putString("logout_id", matcher.group(1)).apply();
                         Log.i(TAG, "Авторизация прошла успешно. logout_id = " + matcher.group(1));
                     }
-                }
+                } else onStateChange(R.string.auth_err, count, pref_auth_login_count);
 
 
             } catch (IOException e) {
@@ -104,12 +105,17 @@ public class AuthTask extends ITask {
             }
 
             if (count++ == pref_auth_login_count) {
-                onStateChange(R.string.auth_err, 0, 0);
+                onStateChange(R.string.auth_err);
                 return false;
             }
         }
-        onStateChange(R.string.auth_finished, 0, 0);
+        onStateChange(R.string.auth_finished);
         return true;
+    }
+
+    @Override
+    public String getTag() {
+        return TAG;
     }
 
     public boolean isConnected() {
