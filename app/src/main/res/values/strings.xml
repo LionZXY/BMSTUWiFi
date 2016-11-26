@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BMSTU Wi-Fi</string>
+    <string name="app_name">Авторизация для Wi-Fi BMSTU</string>
     <string name="notfication_title">Подключение к WiFi</string>
 
     <string name="debug_name">Логи программы</string>

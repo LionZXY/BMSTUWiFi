@@ -41,7 +41,7 @@ public class DetectStateThread extends Thread {
                 .setEnabled(true)
                 .setId(1)
                 .setTitle(context.getResources().getString(R.string.notfication_title))
-                .setIcon(R.drawable.logo_bmstu_white);
+                .setIcon(R.drawable.ic_stat_logo);
 
     }
 

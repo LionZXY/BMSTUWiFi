@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 .setId(1)
                 .setEnabled(true)
                 .setTitle(getString(R.string.auth))
-                .setIcon(R.drawable.logo_bmstu_white);
+                .setIcon(R.drawable.ic_stat_logo);
 
         notification.show();
 
