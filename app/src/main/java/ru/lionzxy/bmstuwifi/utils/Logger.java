@@ -5,6 +5,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -40,6 +42,12 @@ public class Logger implements Parcelable {
                 if (level == Level.ERROR)
                     Log.e(TAG, log);
                 Log.d(TAG, log);
+            }
+        });
+        subscribeOnUpdate(new OnLogUpdate() {
+            @Override
+            public void onLogUpdate(Level level, String TAG, String log) {
+                FirebaseCrash.log("[" + TAG + "] " + log);
             }
         });
     }

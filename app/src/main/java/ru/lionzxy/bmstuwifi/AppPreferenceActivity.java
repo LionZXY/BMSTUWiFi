@@ -1,7 +1,7 @@
 package ru.lionzxy.bmstuwifi;
 
 import android.content.Intent;
-import android.nfc.Tag;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
@@ -20,6 +20,7 @@ import ru.lionzxy.bmstuwifi.utils.Logger;
 public class AppPreferenceActivity extends FragmentActivity {
     private FirebaseAnalytics mFirebaseAnalytics;
     private static final String TAG = "PreferenceActivity";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +90,25 @@ public class AppPreferenceActivity extends FragmentActivity {
             });
             about_cat.addPreference(contactToAuthor);
 
+            Preference logs = new Preference(getActivity());
+            logs.setTitle(R.string.debug_name);
+            logs.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(getActivity(), DebugActivity_.class);
+                    startActivity(intent);
+                    return true;
+                }
+            });
+            about_cat.addPreference(logs);
+
             Preference about = new Preference(getActivity());
             about.setTitle(R.string.pref_about_about);
+            try {
+                about.setSummary("Версия: " + getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
             about_cat.addPreference(about);
         }
     }

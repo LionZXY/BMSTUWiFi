@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import ru.lionzxy.bmstuwifi.R;
 import ru.lionzxy.bmstuwifi.authentificator.IAuth;
@@ -13,6 +12,7 @@ import ru.lionzxy.bmstuwifi.tasks.WaitForIpTask;
 import ru.lionzxy.bmstuwifi.tasks.WaitSSID;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.TaskResponseWithNotification;
+import ru.lionzxy.bmstuwifi.utils.Logger;
 import ru.lionzxy.bmstuwifi.utils.Notification;
 
 import static ru.lionzxy.bmstuwifi.utils.WiFiHelper.isConnected;
@@ -20,7 +20,7 @@ import static ru.lionzxy.bmstuwifi.utils.WiFiHelper.isConnected;
 /**
  * Created by lionzxy on 12.11.16.
  */
-
+    
 public class DetectStateThread extends Thread {
     private static final String TAG = "DetectState";
 
@@ -42,7 +42,6 @@ public class DetectStateThread extends Thread {
                 .setId(1)
                 .setTitle(context.getResources().getString(R.string.notfication_title))
                 .setIcon(R.drawable.ic_stat_logo);
-
     }
 
     @Override
@@ -69,7 +68,7 @@ public class DetectStateThread extends Thread {
         currentTask = waitForIpTask;
         if (waitForIpTask.runTask()) {
             notification.setContinuous().setText(R.string.wait_ip_sucs).show();
-            Log.i(TAG, "Ip Waiting sucs");
+            Logger.getLogger().log(TAG, Logger.Level.DEBUG, "Ip Waiting sucs");
         } else {
             onError();
             return;
@@ -91,12 +90,13 @@ public class DetectStateThread extends Thread {
         currentTask = authTask;
         if (authTask.runTask()) {
             onFinished();
-            Log.i(TAG, "YAY!");
-        } else Log.i(TAG, ":(");
+            Logger.getLogger().log(TAG, Logger.Level.INFO, "YAY!");
+        } else Logger.getLogger().log(TAG, Logger.Level.INFO, ":(");
 
     }
 
     void onError() {
+        Logger.getLogger().log(TAG, Logger.Level.INFO, context.getString(R.string.auth_err));
         notification.setText(R.string.auth_err).setProgress(0, 0).show();
     }
 
@@ -111,5 +111,6 @@ public class DetectStateThread extends Thread {
             currentTask.interrupt();
         if (notification != null)
             notification.hide();
+        Logger.getLogger().log(TAG, Logger.Level.INFO, "Поток превран");
     }
 }
