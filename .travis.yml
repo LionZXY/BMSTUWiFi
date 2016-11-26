@@ -18,7 +18,7 @@ android:
 script:
 - "./gradlew build assembleDebug"
 after_success:
-- sh set_tags.sh
+- git tag -a v${TRAVIS_BUILD_NUMBER}
 deploy:
   provider: releases
   api_key:
@@ -27,6 +27,5 @@ deploy:
   file_glob: "true"
   skip_cleanup: true
   on:
-    tags: true
     repo: LionZXY/BMSTUWiFi
     branch: developers
