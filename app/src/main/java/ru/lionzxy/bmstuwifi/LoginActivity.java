@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @Override
     public Loader<Boolean> onCreateLoader(int id, Bundle args) {
-        AsyncTaskLoader<Boolean> asyncTaskLoader = new AuthAsyncTaskLoader(this, null, notification, args);
+        AsyncTaskLoader<Boolean> asyncTaskLoader = new AuthAsyncTaskLoader(this, progressDialog, notification, args);
         asyncTaskLoader.forceLoad();
         return asyncTaskLoader;
     }
