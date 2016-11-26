@@ -19,7 +19,7 @@ import ru.lionzxy.bmstuwifi.R;
  */
 
 public class ConnectionHelper {
-
+    private static final String TAG = "ConnectHelper";
     public static enum ConnectionState {
         START_CONNECTION(R.string.auth_conn),
         OPEN_CONNECTION(R.string.auth_open),
@@ -43,6 +43,8 @@ public class ConnectionHelper {
     }
 
     public static StringBuilder sendPostRequest(URL url, HashMap<String, String> params, IResponseInterface responseInterface) throws IOException {
+        Logger.getLogger().log(TAG, Logger.Level.DEBUG, "Обрашение к URL " + url);
+
         responseInterface.onState(ConnectionState.START_CONNECTION);
         StringBuilder postData = new StringBuilder();
         if (params != null)

@@ -19,7 +19,7 @@ public class LogoutAsyncTaskLoader extends AsyncTaskLoader<Boolean> {
 
     @Override
     public Boolean loadInBackground() {
-        //TODO Logout
-        return null;
+
+        return false;
     }
 }

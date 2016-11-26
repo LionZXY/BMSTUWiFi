@@ -15,6 +15,7 @@ import ru.lionzxy.bmstuwifi.utils.WiFiHelper;
 public class WaitSSID extends ITask {
     private WifiManager manager;
     private int pref_ssid_wait;
+    private String TAG = "WaitSSID";
     public String Last_SSID = null;
 
     public WaitSSID(WifiManager wifiManager, int pref_ssid_wait) {
@@ -46,4 +47,8 @@ public class WaitSSID extends ITask {
         return true;
     }
 
+    @Override
+    public String getTag() {
+        return TAG;
+    }
 }

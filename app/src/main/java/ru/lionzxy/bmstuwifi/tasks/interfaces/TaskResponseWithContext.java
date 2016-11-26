@@ -3,6 +3,8 @@ package ru.lionzxy.bmstuwifi.tasks.interfaces;
 import android.content.Context;
 import android.content.res.Resources;
 
+import ru.lionzxy.bmstuwifi.utils.Logger;
+
 /**
  * Created by lionzxy on 12.11.16.
  */
@@ -15,8 +17,9 @@ public abstract class TaskResponseWithContext implements ITaskStateResponse {
     }
 
     @Override
-    public void onStateChange(int stateDescribtionResId, int stateNumber, int stateCount) {
+    public void onStateChange(String TAG, int stateDescribtionResId, int stateNumber, int stateCount) {
         onStateChange(res.getString(stateDescribtionResId), stateNumber, stateCount);
+        Logger.getLogger().log(TAG, Logger.Level.INFO, res.getString(stateDescribtionResId));
     }
 
     public abstract void onStateChange(String stateDescribtion, int stateNumber, int stateCount);

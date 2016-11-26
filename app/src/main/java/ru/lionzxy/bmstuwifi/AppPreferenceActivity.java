@@ -1,6 +1,7 @@
 package ru.lionzxy.bmstuwifi;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
@@ -11,21 +12,24 @@ import android.widget.Toast;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import ru.lionzxy.bmstuwifi.fragments.AboutMeFragment;
+import ru.lionzxy.bmstuwifi.utils.Logger;
 
 /**
  * Created by lionzxy on 07.11.16.
  */
 public class AppPreferenceActivity extends FragmentActivity {
     private FirebaseAnalytics mFirebaseAnalytics;
+    private static final String TAG = "PreferenceActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new AuthPreferenceFragment()).commit();
 
+        Logger.getLogger().log(TAG, Logger.Level.DEBUG, "Инициализация активити с настройками");
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN,new Bundle());
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, new Bundle());
     }
 
     public static class AuthPreferenceFragment extends PreferenceFragment {
@@ -86,8 +90,25 @@ public class AppPreferenceActivity extends FragmentActivity {
             });
             about_cat.addPreference(contactToAuthor);
 
+            Preference logs = new Preference(getActivity());
+            logs.setTitle(R.string.debug_name);
+            logs.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(getActivity(), DebugActivity_.class);
+                    startActivity(intent);
+                    return true;
+                }
+            });
+            about_cat.addPreference(logs);
+
             Preference about = new Preference(getActivity());
             about.setTitle(R.string.pref_about_about);
+            try {
+                about.setSummary("Версия: " + getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
             about_cat.addPreference(about);
         }
     }

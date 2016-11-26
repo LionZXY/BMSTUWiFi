@@ -58,19 +58,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 }
             });
         }
+
+        SecurePreferences securePreferences = new SecurePreferences(this);
+        editTextLogin.setText(securePreferences.getString("auth_user", ""));
+        editTextPassword.setText(securePreferences.getString("auth_pass", "").replaceAll(".", "*"));
     }
 
     @Click(R.id.lgn_btn)
     public void onClick() {
-        final String login = editTextLogin.getText().toString();
-        final String password = editTextPassword.getText().toString();
+        String login = editTextLogin.getText().toString();
+        String password = editTextPassword.getText().toString();
 
+        SecurePreferences securePreferences = new SecurePreferences(this);
+        if (password.equals(securePreferences.getString("auth_pass", "").replaceAll(".", "*")))
+            password = securePreferences.getString("auth_pass", "");
 
         notification = new Notification(this)
                 .setId(1)
                 .setEnabled(true)
                 .setTitle(getString(R.string.auth))
-                .setIcon(R.drawable.logo_bmstu_white);
+                .setIcon(R.drawable.ic_stat_logo);
 
         notification.show();
 
@@ -93,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @Override
     public Loader<Boolean> onCreateLoader(int id, Bundle args) {
-        AsyncTaskLoader<Boolean> asyncTaskLoader = new AuthAsyncTaskLoader(this, null, notification, args);
+        AsyncTaskLoader<Boolean> asyncTaskLoader = new AuthAsyncTaskLoader(this, progressDialog, notification, args);
         asyncTaskLoader.forceLoad();
         return asyncTaskLoader;
     }

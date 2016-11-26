@@ -1,89 +1,100 @@
 package ru.lionzxy.bmstuwifi.utils;
 
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.firebase.crash.FirebaseCrash;
 
-/**
- * Copy-paste from https://github.com/TheDrHax/mosmetro-android/blob/master/src/pw/thedrhax/util/Logger.java
- */
+import java.util.ArrayList;
+import java.util.HashMap;
+
 
 public class Logger implements Parcelable {
-    public enum LEVEL {
-        INFO,
+    public enum Level {
         DEBUG,
+        INFO,
+        ERROR;
     }
-    private Map<LEVEL,StringBuilder> logs;
 
-    public Logger () {
-        logs = new HashMap<LEVEL, StringBuilder>();
-        for (LEVEL level : LEVEL.values()) {
-            logs.put(level, new StringBuilder());
+    public interface OnLogUpdate {
+        void onLogUpdate(Level level, String TAG, String log);
+    }
+
+    private ArrayList<OnLogUpdate> onLogUpdates = new ArrayList<>();
+    private final static Logger INSTANCE = new Logger();
+    private HashMap<Level, ArrayList<String>> log;
+
+    public static Logger getLogger() {
+        return INSTANCE;
+    }
+
+    public Logger() {
+        log = new HashMap<>();
+        log.put(Level.DEBUG, new ArrayList<String>());
+        log.put(Level.INFO, new ArrayList<String>());
+        subscribeOnUpdate(new OnLogUpdate() {
+            @Override
+            public void onLogUpdate(Level level, String TAG, String log) {
+                if (level == Level.INFO)
+                    Log.i(TAG, log);
+                if (level == Level.ERROR)
+                    Log.e(TAG, log);
+                Log.d(TAG, log);
+            }
+        });
+        subscribeOnUpdate(new OnLogUpdate() {
+            @Override
+            public void onLogUpdate(Level level, String TAG, String log) {
+                FirebaseCrash.log("[" + TAG + "] " + log);
+            }
+        });
+    }
+
+    public void log(String TAG, Level level, String message) {
+        if (level == Level.INFO) {
+            log.get(Level.INFO).add("[" + TAG + "] " + message);
         }
+        log.get(Level.DEBUG).add("[" + TAG + "] " + message);
+        for (OnLogUpdate update : onLogUpdates)
+            try {
+                update.onLogUpdate(level, TAG, message);
+            } catch (Exception e) {
+                Log.e(TAG, "Ошибка в отправке события обновления лога", e);
+            }
     }
 
-    /*
-     * Inputs
-     */
+    //TODO
+    public void logAboutCrash(String TAG, Exception e) {
 
-    public void log (LEVEL level, String message) {
-        logs.get(level).append(message).append("\n");
     }
 
-    public void log (LEVEL level, Throwable ex) {
-        log(level, Log.getStackTraceString(ex));
+    public ArrayList<String> getLogByLevel(Level level) {
+        return log.get(level);
     }
 
-    public void log (String message) {
-        for (LEVEL level : LEVEL.values()) {
-            log(level, message);
+    public void subscribeOnUpdate(OnLogUpdate onLogUpdate) {
+        if (!onLogUpdates.contains(onLogUpdate))
+            onLogUpdates.add(onLogUpdate);
+    }
+
+    protected Logger(Parcel in) {
+        Bundle bundle = in.readBundle(getClass().getClassLoader());
+        if (bundle.getSerializable("logger") != null && bundle.getSerializable("logger") instanceof HashMap)
+            log = (HashMap<Level, ArrayList<String>>) bundle.getSerializable("logger");
+    }
+
+    public static final Creator<Logger> CREATOR = new Creator<Logger>() {
+        @Override
+        public Logger createFromParcel(Parcel in) {
+
+            return new Logger(in);
         }
-    }
 
-    /*
-     * Logger Utils
-     */
-
-    public void merge (Logger logger) {
-        for (LEVEL level : LEVEL.values()) {
-            log(level, logger.get(level));
-        }
-    }
-
-    public void date() {
-        log(DateFormat.getDateTimeInstance().format(new Date()));
-    }
-
-    /*
-     * Outputs
-     */
-
-    public String get (LEVEL level) {
-        return logs.get(level).toString();
-    }
-
-    /*
-     * Implementation of Parcelable
-     */
-
-    public static Parcelable.Creator CREATOR = new Parcelable.Creator<Logger>() {
         @Override
         public Logger[] newArray(int size) {
             return new Logger[size];
-        }
-
-        @Override
-        public Logger createFromParcel(Parcel source) {
-            Logger logger = new Logger();
-            for (LEVEL level : LEVEL.values()) {
-                logger.log(level, source.readString());
-            }
-            return logger;
         }
     };
 
@@ -94,8 +105,8 @@ public class Logger implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        for (LEVEL level : LEVEL.values()) {
-            dest.writeString(get(level));
-        }
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("logger", log);
+        dest.writeBundle(bundle);
     }
 }

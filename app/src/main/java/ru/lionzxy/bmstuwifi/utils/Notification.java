@@ -33,10 +33,12 @@ public class Notification {
         builder = builder.setContentTitle(title);
         return this;
     }
-    public Notification setText(int resId){
+
+    public Notification setText(int resId) {
         setText(res.getString(resId));
         return this;
     }
+
     public Notification setText(String text) {
         builder = builder.setContentText(text);
 
@@ -66,11 +68,13 @@ public class Notification {
             builder = builder.setProgress(0, 0, true);
         return this;
     }
+
     public Notification setProgress(int progress, int maxProgress) {
         if (Build.VERSION.SDK_INT >= 14)
             builder = builder.setProgress(maxProgress, progress, false);
         return this;
     }
+
     public Notification setProgress(int progress) {
         if (Build.VERSION.SDK_INT >= 14)
             builder = builder.setProgress(100, progress, false);
@@ -80,6 +84,10 @@ public class Notification {
     public Notification setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
+    }
+
+    public Resources getRes() {
+        return res;
     }
 
     public void show() {

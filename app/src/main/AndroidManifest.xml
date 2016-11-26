@@ -26,6 +26,10 @@
         <activity
             android:name=".LoginActivity_"
             android:theme="@style/AppTheme.LoginActivity" />
+        <activity
+            android:name=".DebugActivity_"
+            android:description="@string/debug_name"
+            android:theme="@style/AppTheme.LogActivity" />
 
 
 

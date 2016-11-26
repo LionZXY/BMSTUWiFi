@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import ru.lionzxy.bmstuwifi.authentificator.BMSTUStudentAuth;
 import ru.lionzxy.bmstuwifi.utils.Logger;
@@ -20,16 +19,16 @@ public class ConnectionService extends Service {
     public static final String TAG = "ConnectionService";
 
     private Thread connectionThread;
-    private Logger logger = new Logger();
+    private Logger logger = Logger.getLogger();
     private WifiManager wifiManager;
-    
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
         connectionThread = new DetectStateThread(getBaseContext(), new BMSTUStudentAuth(logger, this));
-        Log.i(TAG, "On Create");
+        logger.log(TAG, Logger.Level.DEBUG, "Service created");
 
     }
 
@@ -38,6 +37,7 @@ public class ConnectionService extends Service {
 
         if (intent != null && ACTION_STOP.equals(intent.getAction()) || !wifiManager.isWifiEnabled()) {
             connectionThread.interrupt();
+            logger.log(TAG, Logger.Level.DEBUG, "Stop service");
             stopSelf();
             return START_NOT_STICKY;
         }
@@ -48,7 +48,7 @@ public class ConnectionService extends Service {
         if (connectionThread.getState().equals(Thread.State.NEW))
             connectionThread.start();
 
-        Log.i(TAG, "On Start Command");
+        logger.log(TAG, Logger.Level.DEBUG, "On start command");
 
         return START_STICKY;
 
@@ -64,6 +64,7 @@ public class ConnectionService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        logger.log(TAG, Logger.Level.DEBUG, "Destroy service");
         connectionThread.interrupt();
     }
 }

@@ -4,14 +4,38 @@ apply plugin: 'android-apt'
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
-    defaultConfig {
-        applicationId "ru.lionzxy.bmstuwifi"
-        minSdkVersion 15
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    def versionPropsFile = file('version.properties')
+
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        def code = versionProps['VERSION_CODE'].toInteger() + 1
+
+        versionProps['VERSION_CODE']=code.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+
+        defaultConfig {
+            applicationId "ru.lionzxy.bmstuwifi"
+            minSdkVersion 15
+            targetSdkVersion 24
+            versionCode code
+            versionName = "1.1.".concat(versionCode.toString()).concat('_alpha');
+
+            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        }
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(
+                    output.outputFile.parent,
+                    "wifi-for-bmstu-${variant.versionName}.apk")
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -32,6 +56,7 @@ dependencies {
     compile 'com.scottyab:secure-preferences-lib:0.1.4'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.google.firebase:firebase-core:9.8.0'
+    compile 'com.google.firebase:firebase-crash:9.8.0'
     testCompile 'junit:junit:4.12'
     apt 'org.androidannotations:androidannotations:4.1.0'
 }
