@@ -2,6 +2,11 @@
     <string name="app_name">BMSTU Wi-Fi</string>
     <string name="notfication_title">Подключение к WiFi</string>
 
+    <string name="debug_name">Логи программы</string>
+    <string name="debug_retry">Повторить попытку</string>
+    <string name="debug_show_log">Показывать Debug логи</string>
+    <string name="debug_login_no_login">Отсуствует логин и пароль</string>
+
     <string name="wait_ssid">Ожидание SSID…</string>
     <string name="wait_ip">Ожидание IP… </string>
     <string name="wait_ip_sucs">Мы дождались IP</string>
