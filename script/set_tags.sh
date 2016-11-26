@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 BRANCH="developers"
-echo "Start set tag\n"
+echo -e "Start set tag\n"
 
 # Are we on the right branch?
 if [ "$TRAVIS_BRANCH" = "$BRANCH" ]; then
 
-   echo "This is ${BRANCH}. ${TRAVIS_PULL_REQUEST}"
+   echo -e "This is ${BRANCH}. ${TRAVIS_PULL_REQUEST}"
   # Is this not a Pull Request?
   if [ "$TRAVIS_PULL_REQUEST" = false ]; then
 
