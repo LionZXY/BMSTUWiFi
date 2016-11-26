@@ -51,7 +51,7 @@ public class AuthAsyncTaskLoader extends AsyncTaskLoader<Boolean> {
                         }
                     }
                 });
-                Logger.getLogger().log(TAG, Logger.Level.INFO, notificationWeakReference.get().getRes().getString(stateDescribtionResId));
+                Logger.getLogger().log(TAG, Logger.Level.INFO, activityWeakReference.get().getString(stateDescribtionResId));
             }
         }).runTask();
     }

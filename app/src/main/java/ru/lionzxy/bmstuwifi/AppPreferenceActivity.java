@@ -1,6 +1,7 @@
 package ru.lionzxy.bmstuwifi;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
@@ -11,18 +12,20 @@ import android.widget.Toast;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import ru.lionzxy.bmstuwifi.fragments.AboutMeFragment;
+import ru.lionzxy.bmstuwifi.utils.Logger;
 
 /**
  * Created by lionzxy on 07.11.16.
  */
 public class AppPreferenceActivity extends FragmentActivity {
     private FirebaseAnalytics mFirebaseAnalytics;
-
+    private static final String TAG = "PreferenceActivity";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new AuthPreferenceFragment()).commit();
 
+        Logger.getLogger().log(TAG, Logger.Level.DEBUG, "Инициализация активити с настройками");
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, new Bundle());
