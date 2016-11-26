@@ -17,12 +17,13 @@ android:
   - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
 script:
 - "./gradlew build assembleDebug"
-- mv ./
+after_success:
+- sh set_tags.sh
 deploy:
   provider: releases
   api_key:
     secure: HNWFRDzt1cVifIGkEm9fFiFX8E2Sr2cfDTXk2mehdji2atYH1LJaU3r6ydF8L/V2qwSAZECj7SIIvQqFXsWHbWFazTD/ln7yuA0aqQXayx6qiNmEVnd/uvXqGpKgGHoJgkaZN31kJu9VqigmGXJ7HuRJVeZoYeBpQ3N0ltXuUsovjbkPNUt0VULYH3pYpJRYsvek4/L0Fi1ZPPM/iKfujY9oeVoOsK+h9HAXqdMDXvKJTl++ff2lwaveHaZm298F8goUn7N87rDxmqIiVEPZdM617g2rfNHGaR8uDW6ot+IfvyiXj2VxypLslgWyuh2bK6vYXMBu4jPSkNt7nLW57wfxR7xJfJbcueVM9ywaXXFcn1NYptlYERIepo9FXTzD+EGjBJxi3rDOwp20NiJO6zWFuL2OgEzHKfgXvnfppLEGDYisxIU0JZOrtUGBdd6Co/1YyL9BeLpA8ES3IB3Ec91DjOm4N91geo3qo9ZauC2mvs2ugN1rGuM0SxQNdaKHj3bWjGwGBOtOtSJqtWQGEuk4GuHdIlqby6I+Isz3EyMWNwWGnjCze3rtJGjHxkHY0/69CNhgEvw1gTkXexgp18o+3aUURNc6A5LWc6nQhYMeG3EMJxMIbJB2tfnGjV6fhxefBBwRa9qVIDeTKhmWumotOEbVdmE+hmv5MoDxsZg=
-  file: "/app/build/outputs/apk/app-debug-*.apk"
+  file: "/app/build/outputs/apk/wifi-for-bmstu-*.apk"
   file_glob: "true"
   skip_cleanup: true
   on:
