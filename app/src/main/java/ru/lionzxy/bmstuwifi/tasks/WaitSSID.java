@@ -1,11 +1,11 @@
 package ru.lionzxy.bmstuwifi.tasks;
 
 import android.net.wifi.WifiManager;
-import android.util.Log;
 
 import ru.lionzxy.bmstuwifi.R;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITaskStateResponse;
+import ru.lionzxy.bmstuwifi.utils.Logger;
 import ru.lionzxy.bmstuwifi.utils.WiFiHelper;
 
 /**
@@ -29,7 +29,7 @@ public class WaitSSID extends ITask {
         int count = 0;
 
         while (WiFiHelper.isUnknownSSID((Last_SSID = manager.getConnectionInfo().getSSID())) && !isInterrupt()) {
-            Log.i("WaitSSID", Last_SSID);
+            Logger.getLogger().log("WaitSSID", Logger.Level.DEBUG, Last_SSID);
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ignored) {

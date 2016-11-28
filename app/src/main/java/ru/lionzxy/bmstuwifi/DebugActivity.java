@@ -2,7 +2,7 @@ package ru.lionzxy.bmstuwifi;
 
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -13,14 +13,13 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.securepreferences.SecurePreferences;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import ru.lionzxy.bmstuwifi.services.ConnectionService;
 import ru.lionzxy.bmstuwifi.utils.AuthAsyncTaskLoader;
 import ru.lionzxy.bmstuwifi.utils.Logger;
 
@@ -53,31 +52,9 @@ public class DebugActivity extends AppCompatActivity implements Logger.OnLogUpda
 
     @Click(R.id.button_connect)
     public void onClickConnect() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setTitle(R.string.auth);
-        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.login_button_hide), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                progressDialog.dismiss();
-            }
-        });
-
-
-        SecurePreferences securePreferences = new SecurePreferences(this);
-        String login = securePreferences.getString("auth_user", null);
-        String password = securePreferences.getString("auth_pass", null);
-
-        if (login == null || password == null) {
-            Toast.makeText(this, R.string.debug_login_no_login, Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        Bundle bundle = new Bundle();
-        bundle.putString("auth_user", login);
-        bundle.putString("auth_pass", password);
-
-        getSupportLoaderManager().initLoader(0, bundle, this);
+        Intent service = new Intent(this, ConnectionService.class);
+        startService(service);
+        Toast.makeText(this, R.string.debug_retry_service, Toast.LENGTH_LONG).show();
     }
 
     @CheckedChange(R.id.show_debug_log)

@@ -26,6 +26,7 @@ public class ConnectionService extends Service {
     public void onCreate() {
         super.onCreate();
 
+        Logger.getLogger().init(getBaseContext());
         wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
         connectionThread = new DetectStateThread(getBaseContext(), new BMSTUStudentAuth(logger, this));
         logger.log(TAG, Logger.Level.DEBUG, "Service created");

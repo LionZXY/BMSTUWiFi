@@ -1,5 +1,6 @@
 package ru.lionzxy.bmstuwifi.utils;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -25,6 +26,7 @@ public class Logger implements Parcelable {
     private ArrayList<OnLogUpdate> onLogUpdates = new ArrayList<>();
     private final static Logger INSTANCE = new Logger();
     private HashMap<Level, ArrayList<String>> log;
+    private Context con = null;
 
     public static Logger getLogger() {
         return INSTANCE;
@@ -63,6 +65,15 @@ public class Logger implements Parcelable {
             } catch (Exception e) {
                 Log.e(TAG, "Ошибка в отправке события обновления лога", e);
             }
+    }
+
+    public void log(String TAG, Level level, int resId) {
+        if (con != null)
+            log(TAG, level, con.getString(resId));
+    }
+
+    public void init(Context context) {
+        this.con = context;
     }
 
     //TODO

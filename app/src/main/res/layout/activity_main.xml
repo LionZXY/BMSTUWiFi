@@ -4,7 +4,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradientlogin"
+    android:background="@color/colorPrimary"
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <LinearLayout
@@ -23,7 +23,7 @@
         <ru.lionzxy.bmstuwifi.views.BlueButton
             android:id="@+id/auth"
             android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:layout_margin="5dp"
             app:imageSrc="@drawable/ic_lock_outline_white_24dp"
             app:text="@string/login" />
@@ -31,7 +31,7 @@
         <ru.lionzxy.bmstuwifi.views.BlueButton
             android:id="@+id/settings"
             android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:layout_margin="5dp"
             app:imageSrc="@drawable/ic_settings_white_24dp"
             app:text="@string/pref" />
@@ -39,7 +39,7 @@
         <ru.lionzxy.bmstuwifi.views.BlueButton
             android:id="@+id/about"
             android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:layout_margin="5dp"
             app:imageSrc="@drawable/ic_info_outline_white_24dp"
             app:text="@string/pref_about" />

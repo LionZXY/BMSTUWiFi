@@ -11,6 +11,7 @@ import ru.lionzxy.bmstuwifi.tasks.AuthTask;
 import ru.lionzxy.bmstuwifi.tasks.WaitForIpTask;
 import ru.lionzxy.bmstuwifi.tasks.WaitSSID;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
+import ru.lionzxy.bmstuwifi.tasks.interfaces.ITaskStateResponse;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.TaskResponseWithNotification;
 import ru.lionzxy.bmstuwifi.utils.Logger;
 import ru.lionzxy.bmstuwifi.utils.Notification;
@@ -48,7 +49,12 @@ public class DetectStateThread extends Thread {
     public void run() {
         //State 1 - WaitSSID and check
         WaitSSID waitSSID = (WaitSSID) new WaitSSID(wifiManager, Integer.parseInt(settings.getString("pref_ssid_wait", "10")))
-                .subscribeOnStateChange(new TaskResponseWithNotification(notification));
+                .subscribeOnStateChange(new ITaskStateResponse() {
+                    @Override
+                    public void onStateChange(String TAG, int stateDescribtionResId, int stateNumber, int stateCount) {
+                        Logger.getLogger().log(TAG, Logger.Level.DEBUG, stateDescribtionResId);
+                    }
+                });
         currentTask = waitSSID;
         if (waitSSID.runTask()) {
             if (!auth.isValidSSID(waitSSID.Last_SSID))

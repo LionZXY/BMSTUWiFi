@@ -65,7 +65,7 @@ public class AuthTask extends ITask {
             context.startActivity(intent);
             return false;
         }
-
+        onStateChange(R.string.auth);
         while (!isConnected() && !isInterrupt()) {
             onStateChange(R.string.auth, count, pref_auth_login_count);
             HashMap<String, String> params = new HashMap<>();

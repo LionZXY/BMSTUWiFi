@@ -24,7 +24,6 @@ public class Notification {
         this.notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         this.context = context;
         this.res = context.getResources();
-
         setCancellable(true);
     }
 
