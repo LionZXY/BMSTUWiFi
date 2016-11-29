@@ -1,16 +1,20 @@
 package ru.lionzxy.bmstuwifi.services;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
 
+import ru.lionzxy.bmstuwifi.DebugActivity_;
 import ru.lionzxy.bmstuwifi.R;
 import ru.lionzxy.bmstuwifi.authentificator.IAuth;
 import ru.lionzxy.bmstuwifi.tasks.AuthTask;
 import ru.lionzxy.bmstuwifi.tasks.WaitForIpTask;
 import ru.lionzxy.bmstuwifi.tasks.WaitSSID;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
+import ru.lionzxy.bmstuwifi.tasks.interfaces.ITaskStateResponse;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.TaskResponseWithNotification;
 import ru.lionzxy.bmstuwifi.utils.Logger;
 import ru.lionzxy.bmstuwifi.utils.Notification;
@@ -20,7 +24,7 @@ import static ru.lionzxy.bmstuwifi.utils.WiFiHelper.isConnected;
 /**
  * Created by lionzxy on 12.11.16.
  */
-    
+
 public class DetectStateThread extends Thread {
     private static final String TAG = "DetectState";
 
@@ -42,13 +46,23 @@ public class DetectStateThread extends Thread {
                 .setId(1)
                 .setTitle(context.getResources().getString(R.string.notfication_title))
                 .setIcon(R.drawable.ic_stat_logo);
+
+        Intent intent = new Intent(context, DebugActivity_.class);
+        PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        notification.getBuilder().setContentIntent(pIntent);
+
     }
 
     @Override
     public void run() {
         //State 1 - WaitSSID and check
         WaitSSID waitSSID = (WaitSSID) new WaitSSID(wifiManager, Integer.parseInt(settings.getString("pref_ssid_wait", "10")))
-                .subscribeOnStateChange(new TaskResponseWithNotification(notification));
+                .subscribeOnStateChange(new ITaskStateResponse() {
+                    @Override
+                    public void onStateChange(String TAG, int stateDescribtionResId, int stateNumber, int stateCount) {
+                        Logger.getLogger().log(TAG, Logger.Level.DEBUG, stateDescribtionResId);
+                    }
+                });
         currentTask = waitSSID;
         if (waitSSID.runTask()) {
             if (!auth.isValidSSID(waitSSID.Last_SSID))
@@ -107,6 +121,7 @@ public class DetectStateThread extends Thread {
     @Override
     public void interrupt() {
         super.interrupt();
+        settings.edit().remove("logout_id").apply();
         if (currentTask != null)
             currentTask.interrupt();
         if (notification != null)

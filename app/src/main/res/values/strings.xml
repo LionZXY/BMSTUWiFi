@@ -4,6 +4,7 @@
 
     <string name="debug_name">Логи программы</string>
     <string name="debug_retry">Повторить попытку</string>
+    <string name="debug_retry_service">Сервис соединения перезапущен</string>
     <string name="debug_show_log">Показывать Debug логи</string>
     <string name="debug_login_no_login">Отсуствует логин и пароль</string>
 
@@ -19,6 +20,7 @@
     <string name="auth_get_data">Получение данных</string>
     <string name="auth_err_login">Неправильный логин и пароль</string>
     <string name="auth_finished">Авторизация прошла успешно ^_^</string>
+    <string name="auth_logout">Выход из сети</string>
     <string name="auth_logout_start">Попытка выхода из сети…</string>
     <string name="auth_logout_end">Вроде получилось… Но ничего гарантировать не могу</string>
     <string name="auth_logout_error">Ошибка при выходе из сети</string>
@@ -44,6 +46,7 @@
     <string name="pref_about_contect_desct">Если возникли трудности в работе с программой или возникли сложности, пишите по одному из предложенных каналов.
     P.S. Ну если хочется поболтать, тоже пишите :3</string>
 
+    <string name="pref">Настройки</string>
     <string name="pref_auth">Авторизация</string>
     <string name="pref_auth_descr">Настройки, связанные с авторизацией. Данные входа и настройки алгоритма авторизации в сети</string>
     <string name="pref_auth_login_count">Количество попыток авторизации</string>
@@ -65,8 +68,12 @@
     <string name="about_me_email_link">nikita@kulikof.ru</string>
     <string name="about_me_email_send">Отправка письма…</string>
     <string name="about_me_email_err">У вас нет приложений для отправки письма</string>
+
+    <string name="login">Авторизация</string>
     <string name="login_logBtn">Войти</string>
     <string name="login_rememberPassword">Запомнить пароль</string>
     <string name="login_password">Пароль</string>
     <string name="login_login">Логин</string>
+
+    <string name="by">Никита Куликов (ИУ4–13)</string>
 </resources>

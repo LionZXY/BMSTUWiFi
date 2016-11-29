@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,6 +22,7 @@ import ru.lionzxy.bmstuwifi.LoginActivity_;
 import ru.lionzxy.bmstuwifi.R;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
 import ru.lionzxy.bmstuwifi.utils.Constant;
+import ru.lionzxy.bmstuwifi.utils.Logger;
 import ru.lionzxy.bmstuwifi.utils.WiFiHelper;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -63,9 +63,10 @@ public class AuthTask extends ITask {
             Intent intent = new Intent(context, LoginActivity_.class);
             intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
+            onStateChange(R.string.auth_err_login);
             return false;
         }
-
+        onStateChange(R.string.auth);
         while (!isConnected() && !isInterrupt()) {
             onStateChange(R.string.auth, count, pref_auth_login_count);
             HashMap<String, String> params = new HashMap<>();
@@ -94,7 +95,7 @@ public class AuthTask extends ITask {
                     Matcher matcher = Pattern.compile(Constant.REG_EXP).matcher(response.body().string());
                     if (matcher.find()) {
                         settings.edit().putString("logout_id", matcher.group(1)).apply();
-                        Log.i(TAG, "Авторизация прошла успешно. logout_id = " + matcher.group(1));
+                        Logger.getLogger().log(TAG, Logger.Level.INFO, "Авторизация прошла успешно. logout_id = " + matcher.group(1));
                     }
                 } else onStateChange(R.string.auth_err, count, pref_auth_login_count);
 

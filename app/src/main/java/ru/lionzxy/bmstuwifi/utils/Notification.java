@@ -24,8 +24,11 @@ public class Notification {
         this.notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         this.context = context;
         this.res = context.getResources();
-
         setCancellable(true);
+    }
+
+    public android.app.Notification.Builder getBuilder(){
+        return builder;
     }
 
 
@@ -99,6 +102,7 @@ public class Notification {
         } else { // support older devices
             notification = builder.getNotification();
         }
+
         //if (!cancellable) notification.flags |= android.app.Notification.FLAG_NO_CLEAR;
         notificationManager.notify(id, notification);
     }

@@ -4,7 +4,9 @@ apply plugin: 'android-apt'
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
-
+    lintOptions {
+        abortOnError false
+    }
     def versionPropsFile = file('version.properties')
 
     if (versionPropsFile.canRead()) {
