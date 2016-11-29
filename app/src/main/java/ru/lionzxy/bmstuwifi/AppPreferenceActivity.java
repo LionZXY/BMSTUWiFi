@@ -1,6 +1,11 @@
 package ru.lionzxy.bmstuwifi;
 
+import android.app.LoaderManager;
+import android.app.ProgressDialog;
+import android.content.AsyncTaskLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -13,6 +18,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import ru.lionzxy.bmstuwifi.fragments.AboutMeFragment;
 import ru.lionzxy.bmstuwifi.utils.Logger;
+import ru.lionzxy.bmstuwifi.utils.LogoutAsyncTaskLoader;
+import ru.lionzxy.bmstuwifi.utils.Notification;
 
 /**
  * Created by lionzxy on 07.11.16.
@@ -30,9 +37,14 @@ public class AppPreferenceActivity extends FragmentActivity {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, new Bundle());
+
+
     }
 
-    public static class AuthPreferenceFragment extends PreferenceFragment {
+    public static class AuthPreferenceFragment extends PreferenceFragment implements LoaderManager.LoaderCallbacks<Boolean> {
+        private ProgressDialog progressDialog;
+        private Notification notification;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -77,6 +89,19 @@ public class AppPreferenceActivity extends FragmentActivity {
             });
             auth_cat.addPreference(openLogin);
 
+            Preference logout = new Preference(getActivity());
+            logout.setTitle(R.string.auth_logout);
+            logout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("logout_id", getPreferenceManager().getSharedPreferences().getString("logout_id", ""));
+                    getLoaderManager().initLoader(1, bundle, AuthPreferenceFragment.this);
+                    return true;
+                }
+            });
+            auth_cat.addPreference(logout);
+
             PreferenceCategory about_cat = (PreferenceCategory) getPreferenceScreen().getPreference(2);
             Preference contactToAuthor = new Preference(getActivity());
             contactToAuthor.setTitle(R.string.pref_about_contact);
@@ -111,5 +136,47 @@ public class AppPreferenceActivity extends FragmentActivity {
             }
             about_cat.addPreference(about);
         }
+
+        @Override
+        public Loader<Boolean> onCreateLoader(int id, Bundle args) {
+            notification = new Notification(getActivity())
+                    .setId(1)
+                    .setEnabled(true)
+                    .setTitle(getString(R.string.auth_logout))
+                    .setIcon(R.drawable.ic_stat_logo);
+
+            notification.show();
+
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setIndeterminate(true);
+            progressDialog.setTitle(R.string.auth_logout);
+            progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.login_button_hide), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    progressDialog.dismiss();
+                }
+            });
+            switch (id) {
+                case 1: {
+                    AsyncTaskLoader<Boolean> asyncTaskLoader = new LogoutAsyncTaskLoader(getActivity(), progressDialog, notification, args.getString("logout_id"));
+                    asyncTaskLoader.forceLoad();
+                    return asyncTaskLoader;
+                }
+                default:
+                    return null;
+            }
+
+        }
+
+        @Override
+        public void onLoadFinished(android.content.Loader<Boolean> loader, Boolean data) {
+
+        }
+
+        @Override
+        public void onLoaderReset(android.content.Loader<Boolean> loader) {
+
+        }
     }
+
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -37,5 +38,10 @@ public class MainActivity extends AppCompatActivity {
     public void onClickSetting() {
         Intent intent = new Intent(this, AppPreferenceActivity.class);
         startActivity(intent);
+    }
+
+    @Click(R.id.about)
+    public void onClickAbout() {
+        Toast.makeText(this, "Временно недоступно", Toast.LENGTH_LONG).show();
     }
 }
