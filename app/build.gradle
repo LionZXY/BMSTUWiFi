@@ -24,7 +24,7 @@ android {
             minSdkVersion 15
             targetSdkVersion 24
             versionCode code
-            versionName = "1.1.".concat(versionCode.toString()).concat('_develop');
+            versionName = "1.1.".concat(versionCode.toString()).concat('_alpha');
 
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         }
