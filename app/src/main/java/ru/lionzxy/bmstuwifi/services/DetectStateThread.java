@@ -1,10 +1,13 @@
 package ru.lionzxy.bmstuwifi.services;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
 
+import ru.lionzxy.bmstuwifi.DebugActivity_;
 import ru.lionzxy.bmstuwifi.R;
 import ru.lionzxy.bmstuwifi.authentificator.IAuth;
 import ru.lionzxy.bmstuwifi.tasks.AuthTask;
@@ -21,7 +24,7 @@ import static ru.lionzxy.bmstuwifi.utils.WiFiHelper.isConnected;
 /**
  * Created by lionzxy on 12.11.16.
  */
-    
+
 public class DetectStateThread extends Thread {
     private static final String TAG = "DetectState";
 
@@ -43,6 +46,11 @@ public class DetectStateThread extends Thread {
                 .setId(1)
                 .setTitle(context.getResources().getString(R.string.notfication_title))
                 .setIcon(R.drawable.ic_stat_logo);
+
+        Intent intent = new Intent(context, DebugActivity_.class);
+        PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        notification.getBuilder().setContentIntent(pIntent);
+
     }
 
     @Override

@@ -27,6 +27,10 @@ public class Notification {
         setCancellable(true);
     }
 
+    public android.app.Notification.Builder getBuilder(){
+        return builder;
+    }
+
 
     public Notification setTitle(String title) {
         builder = builder.setContentTitle(title);
@@ -98,6 +102,7 @@ public class Notification {
         } else { // support older devices
             notification = builder.getNotification();
         }
+
         //if (!cancellable) notification.flags |= android.app.Notification.FLAG_NO_CLEAR;
         notificationManager.notify(id, notification);
     }
