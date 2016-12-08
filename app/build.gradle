@@ -11,13 +11,8 @@ android {
 
     if (versionPropsFile.canRead()) {
         def Properties versionProps = new Properties()
-
         versionProps.load(new FileInputStream(versionPropsFile))
-
-        def code = versionProps['VERSION_CODE'].toInteger() + 1
-
-        versionProps['VERSION_CODE']=code.toString()
-        versionProps.store(versionPropsFile.newWriter(), null)
+        def code = versionProps['VERSION_CODE'].toInteger()
 
         defaultConfig {
             applicationId "ru.lionzxy.bmstuwifi"
@@ -28,6 +23,7 @@ android {
 
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         }
+
     }
 
     applicationVariants.all { variant ->
@@ -40,6 +36,14 @@ android {
 
     buildTypes {
         release {
+            versionPropsFile = file('version.properties')
+            def Properties versionProps = new Properties()
+            versionProps.load(new FileInputStream(versionPropsFile))
+            def code = versionProps['VERSION_CODE'].toInteger() + 1
+
+            versionProps['VERSION_CODE']=code.toString()
+            versionProps.store(versionPropsFile.newWriter(), null)
+
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

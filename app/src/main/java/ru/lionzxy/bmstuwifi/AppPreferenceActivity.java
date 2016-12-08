@@ -25,7 +25,6 @@ import ru.lionzxy.bmstuwifi.utils.Notification;
  * Created by lionzxy on 07.11.16.
  */
 public class AppPreferenceActivity extends FragmentActivity {
-    private FirebaseAnalytics mFirebaseAnalytics;
     private static final String TAG = "PreferenceActivity";
 
     @Override
@@ -34,11 +33,6 @@ public class AppPreferenceActivity extends FragmentActivity {
         getFragmentManager().beginTransaction().replace(android.R.id.content, new AuthPreferenceFragment()).commit();
 
         Logger.getLogger().log(TAG, Logger.Level.DEBUG, "Инициализация активити с настройками");
-
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, new Bundle());
-
-
     }
 
     public static class AuthPreferenceFragment extends PreferenceFragment implements LoaderManager.LoaderCallbacks<Boolean> {

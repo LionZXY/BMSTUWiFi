@@ -25,6 +25,8 @@ public class WiFiHelper {
     public static boolean isConnected(Context context, boolean strict) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork == null)
+            return false;
         if (strict) {
             HttpURLConnection urlConnection = null;
             try {

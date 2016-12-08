@@ -14,7 +14,8 @@ import ru.lionzxy.bmstuwifi.tasks.interfaces.ITaskStateResponse;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.TaskResponseWithNotification;
 
 /**
- * Created by lionzxy on 14.11.16.
+ * TODO Это очень плохое решение
+ *
  */
 
 public class AuthAsyncTaskLoader extends AsyncTaskLoader<Boolean> {
