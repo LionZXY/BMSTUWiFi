@@ -121,7 +121,6 @@ public class DetectStateThread extends Thread {
     @Override
     public void interrupt() {
         super.interrupt();
-        settings.edit().remove("logout_id").apply();
         if (currentTask != null)
             currentTask.interrupt();
         if (notification != null)
