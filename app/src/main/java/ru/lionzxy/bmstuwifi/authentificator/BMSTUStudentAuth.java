@@ -24,7 +24,7 @@ public class BMSTUStudentAuth extends IAuth {
     private static final OkHttpClient client = new OkHttpClient();
 
     public BMSTUStudentAuth(Logger logger, Context context) {
-        super(logger, context, "bmstu_lb", "3signala");
+        super(logger, context, "bmstu_lb");
     }
 
 
