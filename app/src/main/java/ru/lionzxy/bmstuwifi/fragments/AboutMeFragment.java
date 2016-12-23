@@ -31,35 +31,35 @@ public class AboutMeFragment extends DialogFragment implements View.OnClickListe
         LinearLayout.LayoutParams linLayoutParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         linearLayout.setLayoutParams(linLayoutParam);
 
-        View contactView = inflater.inflate(R.layout.fragment_aboutme, null, false);
+        View contactView = inflater.inflate(R.layout.fragment_aboutme, container, false);
         ((ImageView) contactView.findViewById(R.id.logoCompany)).setImageResource(R.drawable.logo_vk);
         ((TextView) contactView.findViewById(R.id.nameCompany)).setText(R.string.about_me_vk);
         ((TextView) contactView.findViewById(R.id.link)).setText(R.string.about_me_vk_link);
         contactView.setOnClickListener(this);
         linearLayout.addView(contactView);
 
-        contactView = inflater.inflate(R.layout.fragment_aboutme, null, false);
+        contactView = inflater.inflate(R.layout.fragment_aboutme, container, false);
         ((ImageView) contactView.findViewById(R.id.logoCompany)).setImageResource(R.drawable.logo_telegram);
         ((TextView) contactView.findViewById(R.id.nameCompany)).setText(R.string.about_me_telegram);
         ((TextView) contactView.findViewById(R.id.link)).setText(R.string.about_me_telegram_link);
         contactView.setOnClickListener(this);
         linearLayout.addView(contactView);
 
-        contactView = inflater.inflate(R.layout.fragment_aboutme, null, false);
+        contactView = inflater.inflate(R.layout.fragment_aboutme, container, false);
         ((ImageView) contactView.findViewById(R.id.logoCompany)).setImageResource(R.drawable.logo_4pda);
         ((TextView) contactView.findViewById(R.id.nameCompany)).setText(R.string.about_me_4pda);
         ((TextView) contactView.findViewById(R.id.link)).setText(R.string.about_me_4pda_link);
         contactView.setOnClickListener(this);
         linearLayout.addView(contactView);
 
-        contactView = inflater.inflate(R.layout.fragment_aboutme, null, false);
+        contactView = inflater.inflate(R.layout.fragment_aboutme, container, false);
         ((ImageView) contactView.findViewById(R.id.logoCompany)).setImageResource(R.drawable.logo_github);
         ((TextView) contactView.findViewById(R.id.nameCompany)).setText(R.string.about_me_github);
         ((TextView) contactView.findViewById(R.id.link)).setText(R.string.about_me_github_link);
         contactView.setOnClickListener(this);
         linearLayout.addView(contactView);
 
-        contactView = inflater.inflate(R.layout.fragment_aboutme, null, false);
+        contactView = inflater.inflate(R.layout.fragment_aboutme, container, false);
         ((ImageView) contactView.findViewById(R.id.logoCompany)).setImageResource(R.drawable.logo_email);
         ((TextView) contactView.findViewById(R.id.nameCompany)).setText(R.string.about_me_email);
         ((TextView) contactView.findViewById(R.id.link)).setText(R.string.about_me_email_link);

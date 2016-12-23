@@ -65,7 +65,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:buttonTint="@android:color/white"
-                android:text="@string/login_rememberPassword" />
+                android:text="@string/login_rememberPassword"
+                android:checked="true" />
 
 
             <Button

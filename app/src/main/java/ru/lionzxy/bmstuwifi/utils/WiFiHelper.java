@@ -60,8 +60,8 @@ public class WiFiHelper {
             Network[] networks = manager.getAllNetworks();
             NetworkInfo networkInfo;
             Network network;
-            for (int i = 0; i < networks.length; i++) {
-                network = networks[i];
+            for (Network network1 : networks) {
+                network = network1;
                 networkInfo = manager.getNetworkInfo(network);
                 if ((networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
                     return network;

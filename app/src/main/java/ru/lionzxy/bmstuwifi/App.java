@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import ru.lionzxy.bmstuwifi.tasks.AuthTask;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
+import ru.lionzxy.bmstuwifi.utils.Logger;
 
 /**
  * Created by lionzxy on 13.11.16.
@@ -46,9 +47,15 @@ public class App extends Application {
         }
 
         mSecurePrefs.edit().putString("lb_auth_pass", mSecurePrefs.getString("auth_pass", null))
-                .putString("lb_auth_user", mSecurePrefs.getString("auth_user", null)); //Подготовка к будущему апдейту
+                .putString("lb_auth_user", mSecurePrefs.getString("auth_user", null)).apply(); //Подготовка к будущему апдейту
 
 
         return mSecurePrefs;
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        Logger.getLogger().saveInFile();
     }
 }

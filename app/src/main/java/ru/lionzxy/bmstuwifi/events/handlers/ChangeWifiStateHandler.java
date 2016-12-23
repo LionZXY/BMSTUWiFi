@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import ru.lionzxy.bmstuwifi.services.ConnectionService;
 import ru.lionzxy.bmstuwifi.utils.Logger;

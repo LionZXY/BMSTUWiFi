@@ -11,10 +11,9 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
-
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import ru.lionzxy.bmstuwifi.fragments.AboutMeFragment;
 import ru.lionzxy.bmstuwifi.utils.Logger;
@@ -89,7 +88,7 @@ public class AppPreferenceActivity extends FragmentActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("logout_id", getPreferenceManager().getSharedPreferences().getString("logout_id", ""));
+                    bundle.putString("logout_id", PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("logout_id", ""));
                     getLoaderManager().initLoader(1, bundle, AuthPreferenceFragment.this);
                     return true;
                 }

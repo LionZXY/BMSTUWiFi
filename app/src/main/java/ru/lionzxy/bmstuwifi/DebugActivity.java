@@ -76,6 +76,7 @@ public class DebugActivity extends AppCompatActivity implements Logger.OnLogUpda
             public void run() {
                 if (DebugActivity.this.level == Logger.Level.DEBUG || DebugActivity.this.level == level)
                     logText.append("[" + TAG + "] " + log + "\n");
+
             }
         });
     }
