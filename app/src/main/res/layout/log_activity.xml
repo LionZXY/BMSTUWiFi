@@ -37,6 +37,14 @@
         android:layout_marginRight="10dp"
         android:text="@string/debug_show_log" />
 
+    <TextView
+        android:id="@+id/logoutIdText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="logout_id: Не определен"/>
+
     <Button
         android:id="@+id/button_connect"
         android:layout_width="match_parent"

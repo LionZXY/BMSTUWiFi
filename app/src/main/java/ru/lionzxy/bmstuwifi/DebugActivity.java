@@ -4,6 +4,7 @@ package ru.lionzxy.bmstuwifi;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -35,6 +36,10 @@ public class DebugActivity extends AppCompatActivity implements Logger.OnLogUpda
 
     @ViewById(R.id.text_messages)
     TextView logText;
+
+    @ViewById(R.id.logoutIdText)
+    TextView logoutId;
+
     @ViewById(R.id.show_debug_log)
     CheckBox checkBox;
 
@@ -48,6 +53,7 @@ public class DebugActivity extends AppCompatActivity implements Logger.OnLogUpda
         logText.setText(stringBuilder.toString());
 
         logger.subscribeOnUpdate(this);
+        logoutId.setText("logout_id: " + PreferenceManager.getDefaultSharedPreferences(this).getString("logout_id", "null"));
     }
 
     @Click(R.id.button_connect)
@@ -55,6 +61,7 @@ public class DebugActivity extends AppCompatActivity implements Logger.OnLogUpda
         Intent service = new Intent(this, ConnectionService.class);
         startService(service);
         Toast.makeText(this, R.string.debug_retry_service, Toast.LENGTH_LONG).show();
+        logoutId.setText("logout_id: " + PreferenceManager.getDefaultSharedPreferences(this).getString("logout_id", "null"));
     }
 
     @CheckedChange(R.id.show_debug_log)
@@ -76,6 +83,7 @@ public class DebugActivity extends AppCompatActivity implements Logger.OnLogUpda
             public void run() {
                 if (DebugActivity.this.level == Logger.Level.DEBUG || DebugActivity.this.level == level)
                     logText.append("[" + TAG + "] " + log + "\n");
+                logoutId.setText("logout_id: " + PreferenceManager.getDefaultSharedPreferences(DebugActivity.this).getString("logout_id", "null"));
 
             }
         });
