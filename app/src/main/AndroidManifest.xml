@@ -24,11 +24,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AppPreferenceActivity"/>
+        <activity android:name=".AppPreferenceActivity"
+            android:description="@string/debug_name"
+            android:theme="@style/AppTheme.ActionBar"/>
 
         <activity
-            android:name=".LoginActivity_"
-            android:theme="@style/AppTheme.LoginActivity" />
+            android:name=".LoginActivity_"/>
+
         <activity
             android:name=".DebugActivity_"
             android:description="@string/debug_name"

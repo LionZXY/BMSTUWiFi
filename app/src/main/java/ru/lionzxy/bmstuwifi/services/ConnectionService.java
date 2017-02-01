@@ -28,7 +28,7 @@ public class ConnectionService extends Service {
 
         Logger.getLogger().init(getBaseContext());
         wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
-        connectionThread = new DetectStateThread(getBaseContext(), new BMSTUStudentAuth(logger, this));
+        connectionThread = new DetectStateThread(getBaseContext(), new BMSTUStudentAuth(logger));
         logger.log(TAG, Logger.Level.DEBUG, "Service created");
 
     }
@@ -44,7 +44,7 @@ public class ConnectionService extends Service {
         }
 
         if (connectionThread.getState().equals(Thread.State.TERMINATED))
-            connectionThread = new DetectStateThread(this, new BMSTUStudentAuth(logger, this));
+            connectionThread = new DetectStateThread(this, new BMSTUStudentAuth(logger));
 
         if (connectionThread.getState().equals(Thread.State.NEW))
             connectionThread.start();

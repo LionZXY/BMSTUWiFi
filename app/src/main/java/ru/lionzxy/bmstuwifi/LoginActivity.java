@@ -9,6 +9,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -32,7 +33,7 @@ import ru.lionzxy.bmstuwifi.utils.Notification;
  */
 @EActivity(R.layout.login_activity)
 public class LoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Boolean> {
-    public static final String ACTION_RESAVE_PSWD = "RESAVE_PSWD";
+    public static final String ACTION_RESAVE_PSWD = "ru.lionzxy.bmstuwifi.LoginActivity.RESAVE_PSWD";
     private ProgressDialog progressDialog;
     private Notification notification;
     @ViewById(R.id.editText_login)

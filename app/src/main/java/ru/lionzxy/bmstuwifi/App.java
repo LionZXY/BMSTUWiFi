@@ -1,8 +1,8 @@
 package ru.lionzxy.bmstuwifi;
 
-import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.multidex.MultiDexApplication;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.securepreferences.SecurePreferences;
@@ -17,14 +17,13 @@ import ru.lionzxy.bmstuwifi.utils.Logger;
  * Created by lionzxy on 13.11.16.
  */
 
-public class App extends Application {
+public class App extends MultiDexApplication {
     private HashMap<Class<? extends ITask>, ITask> taskHashMap = new HashMap<>();
     protected static App instance;
     private SecurePreferences mSecurePrefs;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     public App() {
-        super();
         instance = this;
     }
 

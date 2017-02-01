@@ -91,12 +91,18 @@ public class AuthTask extends ITask {
                 onStateChange(R.string.auth_send_data, count, pref_auth_login_count);
                 Response response = client.newCall(request).execute();
                 if (response.isSuccessful()) {
+                    Logger.getLogger().log(TAG, Logger.Level.DEBUG, "logout_id: " + settings.getString("logout_id", "null"));
                     onStateChange(R.string.auth_finished);
-                    Matcher matcher = Pattern.compile(Constant.REG_EXP).matcher(response.body().string());
+                    String resp = response.body().string();
+                    Logger.getLogger().log(TAG, Logger.Level.DEBUG, resp);
+                    Matcher matcher = Pattern.compile(Constant.REG_EXP).matcher(resp);
                     if (matcher.find()) {
-                        settings.edit().putString("logout_id", matcher.group(1)).apply();
-                        Logger.getLogger().log(TAG, Logger.Level.INFO, "Авторизация прошла успешно. logout_id = " + matcher.group(1));
-                    }
+                        String logout_id = matcher.group(1);
+                        logout_id = logout_id.substring(1, logout_id.length() - 2);
+                        settings.edit().putString("logout_id", logout_id).apply();
+                        Logger.getLogger().log(TAG, Logger.Level.INFO, "Авторизация прошла успешно. logout_id = " + logout_id);
+                    } else Logger.getLogger().log(TAG, Logger.Level.INFO, "Не удалось найти logout_id!");
+                    Logger.getLogger().log(TAG, Logger.Level.DEBUG, "logout_id: " + settings.getString("logout_id", "null"));
                 } else onStateChange(R.string.auth_err, count, pref_auth_login_count);
 
 

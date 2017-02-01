@@ -9,6 +9,8 @@ import android.os.Build;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import ru.lionzxy.bmstuwifi.App;
+
 /**
  * Created by lionzxy on 14.11.16.
  */
@@ -42,6 +44,10 @@ public class WiFiHelper {
         } else {
             return activeNetwork.isConnectedOrConnecting();
         }
+    }
+
+    public static boolean isConnected() {
+        return isConnected(App.get(), App.get().getSharedPreferences().getBoolean("pref_wifi_check_strict", true));
     }
 
     //Try set default wifi connection
