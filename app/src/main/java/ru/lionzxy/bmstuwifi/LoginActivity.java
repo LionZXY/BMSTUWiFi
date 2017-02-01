@@ -9,13 +9,17 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.SingleLineTransformationMethod;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.securepreferences.SecurePreferences;
@@ -44,6 +48,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     Button button;
     @ViewById(R.id.rememberPassword)
     CheckBox rememberPswd;
+    @ViewById(R.id.editText_password_visible)
+    ImageView editTextPasswordVisible;
 
     @AfterViews
     protected void afterViews() {
@@ -84,6 +90,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                     onClick();
                     return true;
                 } else return false;
+            }
+        });
+        editTextPassword.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0)
+                    editTextPasswordVisible.setVisibility(View.VISIBLE);
+                else editTextPasswordVisible.setVisibility(View.GONE);
+            }
+        });
+
+        editTextPasswordVisible.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editTextPassword.getTransformationMethod() instanceof PasswordTransformationMethod) {
+                    editTextPassword.setTransformationMethod(new SingleLineTransformationMethod());
+                    editTextPasswordVisible.setImageResource(R.drawable.ic_visibility_white_24dp);
+                } else {
+
+                    editTextPassword.setTransformationMethod(new PasswordTransformationMethod());
+                    editTextPasswordVisible.setImageResource(R.drawable.ic_visibility_off_white_24dp);
+                }
             }
         });
     }

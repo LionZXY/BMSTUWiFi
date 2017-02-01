@@ -42,21 +42,35 @@
                 app:met_textColorHint="@android:color/white"
                 app:met_underlineColor="@android:color/white" />
 
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/editText_password"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:gravity="center"
-                android:hint="@string/login_password"
-                android:inputType="textPassword"
-                app:met_baseColor="@android:color/white"
-                app:met_errorColor="@android:color/white"
-                app:met_primaryColor="@android:color/white"
-                app:met_textColor="@android:color/white"
-                app:met_textColorHint="@android:color/white"
-                app:met_underlineColor="@android:color/white" />
+                android:layout_marginBottom="5dp">
 
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/editText_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="@string/login_password"
+                    android:inputType="textPassword"
+                    app:met_baseColor="@android:color/white"
+                    app:met_errorColor="@android:color/white"
+                    app:met_primaryColor="@android:color/white"
+                    app:met_textColor="@android:color/white"
+                    app:met_textColorHint="@android:color/white"
+                    app:met_underlineColor="@android:color/white" />
+
+                <ImageView
+                    android:id="@+id/editText_password_visible"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_visibility_off_white_24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"/>
+            </RelativeLayout>
 
             <android.support.v7.widget.AppCompatCheckBox
                 android:textColor="@android:color/white"
