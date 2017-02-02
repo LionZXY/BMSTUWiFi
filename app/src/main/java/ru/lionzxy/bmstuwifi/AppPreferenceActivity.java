@@ -4,24 +4,18 @@ import android.app.LoaderManager;
 import android.app.ProgressDialog;
 import android.content.AsyncTaskLoader;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.Loader;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
-import android.view.Menu;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
-import ru.lionzxy.bmstuwifi.utils.Logger;
 import ru.lionzxy.bmstuwifi.utils.LogoutAsyncTaskLoader;
 import ru.lionzxy.bmstuwifi.utils.Notification;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
  * Created by lionzxy on 07.11.16.

@@ -7,11 +7,13 @@ import android.support.multidex.MultiDexApplication;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.securepreferences.SecurePreferences;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import ru.lionzxy.bmstuwifi.interfaces.OnAppTerminate;
 import ru.lionzxy.bmstuwifi.tasks.AuthTask;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
-import ru.lionzxy.bmstuwifi.utils.Logger;
 
 /**
  * Created by lionzxy on 13.11.16.
@@ -22,6 +24,7 @@ public class App extends MultiDexApplication {
     protected static App instance;
     private SecurePreferences mSecurePrefs;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private List<OnAppTerminate> subscribeList = new ArrayList<>();
 
     public App() {
         instance = this;
@@ -52,9 +55,14 @@ public class App extends MultiDexApplication {
         return mSecurePrefs;
     }
 
+    public void subcribeOnTerminate(OnAppTerminate listener) {
+        subscribeList.add(listener);
+    }
+
     @Override
     public void onTerminate() {
         super.onTerminate();
-        Logger.getLogger().saveInFile();
+        for (OnAppTerminate terminate : subscribeList)
+            terminate.onTerminate();
     }
 }

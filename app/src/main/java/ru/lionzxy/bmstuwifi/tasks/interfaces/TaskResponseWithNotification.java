@@ -1,7 +1,7 @@
 package ru.lionzxy.bmstuwifi.tasks.interfaces;
 
-import ru.lionzxy.bmstuwifi.utils.Logger;
 import ru.lionzxy.bmstuwifi.utils.Notification;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
  * Created by lionzxy on 13.11.16.

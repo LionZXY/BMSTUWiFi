@@ -22,8 +22,8 @@ import ru.lionzxy.bmstuwifi.LoginActivity_;
 import ru.lionzxy.bmstuwifi.R;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
 import ru.lionzxy.bmstuwifi.utils.Constant;
-import ru.lionzxy.bmstuwifi.utils.Logger;
 import ru.lionzxy.bmstuwifi.utils.WiFiHelper;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static ru.lionzxy.bmstuwifi.utils.WiFiHelper.switchToWifiNetwork;

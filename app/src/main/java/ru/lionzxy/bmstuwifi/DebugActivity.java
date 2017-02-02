@@ -20,16 +20,17 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import ru.lionzxy.bmstuwifi.interfaces.OnLogUpdate;
 import ru.lionzxy.bmstuwifi.services.ConnectionService;
 import ru.lionzxy.bmstuwifi.utils.AuthAsyncTaskLoader;
-import ru.lionzxy.bmstuwifi.utils.Logger;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
  * Created by lionzxy on 25.11.16.
  */
 
 @EActivity(R.layout.log_activity)
-public class DebugActivity extends AppCompatActivity implements Logger.OnLogUpdate, LoaderManager.LoaderCallbacks<Boolean> {
+public class DebugActivity extends AppCompatActivity implements OnLogUpdate, LoaderManager.LoaderCallbacks<Boolean> {
     private Logger.Level level = Logger.Level.INFO;
     private Logger logger = Logger.getLogger();
     private ProgressDialog progressDialog;

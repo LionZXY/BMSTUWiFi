@@ -2,7 +2,7 @@ package ru.lionzxy.bmstuwifi.authentificator;
 
 import java.util.HashMap;
 
-import ru.lionzxy.bmstuwifi.utils.Logger;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
  * Created by lionzxy on 10.01.17.

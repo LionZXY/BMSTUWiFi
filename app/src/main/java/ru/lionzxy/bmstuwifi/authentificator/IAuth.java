@@ -1,12 +1,9 @@
 package ru.lionzxy.bmstuwifi.authentificator;
 
-import android.content.Context;
-
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
-import ru.lionzxy.bmstuwifi.utils.Logger;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
  * Created by lionzxy on 05.11.16.

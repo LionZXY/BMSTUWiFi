@@ -2,6 +2,8 @@
     <string name="app_name">Авторизация для Wi-Fi BMSTU</string>
     <string name="notfication_title">Подключение к WiFi</string>
 
+    <string name="toast_lwrite_permission_deny">Ну и чего ты наделал? :( Теперь я не смогу писать логи :( Хотя может это и к лучшему...</string>
+
     <string name="debug_name">Логи программы</string>
     <string name="debug_retry">Повторить попытку</string>
     <string name="debug_retry_service">Сервис соединения перезапущен</string>

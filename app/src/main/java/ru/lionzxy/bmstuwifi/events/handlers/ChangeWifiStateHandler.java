@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.preference.PreferenceManager;
 
 import ru.lionzxy.bmstuwifi.services.ConnectionService;
-import ru.lionzxy.bmstuwifi.utils.Logger;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
  * Created by lionzxy on 04.11.16.

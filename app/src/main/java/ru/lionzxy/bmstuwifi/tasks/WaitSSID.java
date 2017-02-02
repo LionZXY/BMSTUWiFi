@@ -5,8 +5,8 @@ import android.net.wifi.WifiManager;
 import ru.lionzxy.bmstuwifi.R;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITaskStateResponse;
-import ru.lionzxy.bmstuwifi.utils.Logger;
 import ru.lionzxy.bmstuwifi.utils.WiFiHelper;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
  * Created by lionzxy on 12.11.16.

@@ -12,6 +12,7 @@ import java.lang.ref.WeakReference;
 import ru.lionzxy.bmstuwifi.tasks.AuthTask;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITaskStateResponse;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.TaskResponseWithNotification;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
  * TODO Это очень плохое решение

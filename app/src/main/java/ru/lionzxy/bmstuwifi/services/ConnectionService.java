@@ -7,7 +7,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import ru.lionzxy.bmstuwifi.authentificator.BMSTUStudentAuth;
-import ru.lionzxy.bmstuwifi.utils.Logger;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
  * Created by lionzxy on 04.11.16.
@@ -26,7 +26,6 @@ public class ConnectionService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        Logger.getLogger().init(getBaseContext());
         wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
         connectionThread = new DetectStateThread(getBaseContext(), new BMSTUStudentAuth(logger));
         logger.log(TAG, Logger.Level.DEBUG, "Service created");

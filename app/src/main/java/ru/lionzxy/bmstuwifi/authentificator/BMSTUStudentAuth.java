@@ -3,7 +3,7 @@ package ru.lionzxy.bmstuwifi.authentificator;
 import java.io.IOException;
 
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
-import ru.lionzxy.bmstuwifi.utils.Logger;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
  * Created by lionzxy on 05.11.16.

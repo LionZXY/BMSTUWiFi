@@ -16,8 +16,8 @@ import ru.lionzxy.bmstuwifi.tasks.WaitSSID;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITaskStateResponse;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.TaskResponseWithNotification;
-import ru.lionzxy.bmstuwifi.utils.Logger;
 import ru.lionzxy.bmstuwifi.utils.Notification;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 import static ru.lionzxy.bmstuwifi.utils.WiFiHelper.isConnected;
 

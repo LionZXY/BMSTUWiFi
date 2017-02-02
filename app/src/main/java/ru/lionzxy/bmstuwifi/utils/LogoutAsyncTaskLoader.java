@@ -10,6 +10,7 @@ import java.lang.ref.WeakReference;
 import ru.lionzxy.bmstuwifi.tasks.LogoutTask;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.ITaskStateResponse;
 import ru.lionzxy.bmstuwifi.tasks.interfaces.TaskResponseWithNotification;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
  * Created by lionzxy on 17.11.16.
