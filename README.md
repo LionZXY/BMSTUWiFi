@@ -1,4 +1,4 @@
-# BMSTUWiFi [![Google Play](img/google-play.png)](https://play.google.com/store/apps/details?id=pw.thedrhax.mosmetro) [![ВКонтакте](img/vk-box.png)](https://vk.com/wifi_v_metro)
+# BMSTUWiFi [![Google Play](img/google-play.png)](https://play.google.com/store/apps/details?id=ru.lionzxy.bmstuwifi) [![ВКонтакте](img/vk-box.png)](https://vk.com/kulikof.nikita)
 Приложение для автоматической авторизации в Wi-Fi МГТУ им. Н.Э.Баумана
 
 #Описание
