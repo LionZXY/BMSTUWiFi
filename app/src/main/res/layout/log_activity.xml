@@ -49,6 +49,5 @@
         android:id="@+id/button_connect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="button_connect"
         android:text="@string/debug_retry" />
 </LinearLayout>

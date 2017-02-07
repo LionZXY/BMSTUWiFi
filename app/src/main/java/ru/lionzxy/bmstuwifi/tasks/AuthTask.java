@@ -1,13 +1,13 @@
 package ru.lionzxy.bmstuwifi.tasks;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,12 +20,14 @@ import okhttp3.Response;
 import ru.lionzxy.bmstuwifi.App;
 import ru.lionzxy.bmstuwifi.LoginActivity_;
 import ru.lionzxy.bmstuwifi.R;
-import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
+import ru.lionzxy.bmstuwifi.authentificator.IAuth;
+import ru.lionzxy.bmstuwifi.interfaces.ICanOpenActivity;
+import ru.lionzxy.bmstuwifi.interfaces.ITask;
+import ru.lionzxy.bmstuwifi.interfaces.ITaskStateResponse;
 import ru.lionzxy.bmstuwifi.utils.Constant;
 import ru.lionzxy.bmstuwifi.utils.WiFiHelper;
 import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static ru.lionzxy.bmstuwifi.utils.WiFiHelper.switchToWifiNetwork;
 
 /**
@@ -34,47 +36,36 @@ import static ru.lionzxy.bmstuwifi.utils.WiFiHelper.switchToWifiNetwork;
 
 public class AuthTask extends ITask {
     public static final String TAG = "AuthTask";
-    private Context context;
-    private SharedPreferences settings;
     private int pref_auth_login_count;
-    private String login, password;
     private final OkHttpClient client;
+    private IAuth auth;
 
-    public AuthTask(Context context, @Nullable String login, @Nullable String password) {
-        this.context = context;
-        this.settings = PreferenceManager.getDefaultSharedPreferences(context);
-        pref_auth_login_count = settings.getInt("pref_auth_login_count", 3);
-        this.login = login;
-        this.password = password;
+    public AuthTask(IAuth auth) {
+        pref_auth_login_count = PreferenceManager.getDefaultSharedPreferences(App.get()).getInt("pref_auth_login_count", 3);
+        this.auth = auth;
         this.client = new OkHttpClient();
-    }
-
-    public AuthTask(Context context) {
-        this(context, null, null);
     }
 
     @Override
     public boolean runTask() {
         int count = 0;
-        SharedPreferences preferences = App.get().getSharedPreferences();
-        String login = this.login == null ? preferences.getString("auth_user", null) : this.login;
-        String password = this.password == null ? preferences.getString("auth_pass", null) : this.password;
+        String login = this.auth.getLogin(null);
+        String password = this.auth.getPassword(null);
+
         if (login == null || password == null) {
-            Intent intent = new Intent(context, LoginActivity_.class);
-            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
             onStateChange(R.string.auth_err_login);
+            for (WeakReference<ITaskStateResponse> taskStateResponseWeakReference : this.taskWeakResponses)
+                if (taskStateResponseWeakReference.get() != null && taskStateResponseWeakReference.get() instanceof ICanOpenActivity) {
+                    Bundle extra = new Bundle();
+                    extra.putString("wifi_ssid", auth.getSSID());
+                    ((ICanOpenActivity) taskStateResponseWeakReference.get()).openActivity(LoginActivity_.class, null, null);
+                }
             return false;
         }
         onStateChange(R.string.auth);
         while (!isConnected() && !isInterrupt()) {
             onStateChange(R.string.auth, count, pref_auth_login_count);
-            HashMap<String, String> params = new HashMap<>();
-            params.put("redirurl", "/");
-            params.put("accept", "Continue");
-            params.put("auth_user", login);
-            params.put("auth_pass", password);
-            switchToWifiNetwork((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+            switchToWifiNetwork((ConnectivityManager) App.get().getSystemService(Context.CONNECTIVITY_SERVICE));
 
             try {
                 RequestBody formBody = new FormBody.Builder()
@@ -84,11 +75,12 @@ public class AuthTask extends ITask {
                         .add("accept", "Continue")
                         .build();
                 Request request = new Request.Builder()
-                        .url(Constant.getAuthSite(context))
+                        .url(auth.getAuthSite())
                         .post(formBody)
                         .build();
 
                 onStateChange(R.string.auth_send_data, count, pref_auth_login_count);
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(App.get());
                 Response response = client.newCall(request).execute();
                 if (response.isSuccessful()) {
                     Logger.getLogger().log(TAG, Logger.Level.DEBUG, "logout_id: " + settings.getString("logout_id", "null"));
@@ -101,7 +93,8 @@ public class AuthTask extends ITask {
                         logout_id = logout_id.substring(1, logout_id.length() - 2);
                         settings.edit().putString("logout_id", logout_id).apply();
                         Logger.getLogger().log(TAG, Logger.Level.INFO, "Авторизация прошла успешно. logout_id = " + logout_id);
-                    } else Logger.getLogger().log(TAG, Logger.Level.INFO, "Не удалось найти logout_id!");
+                    } else
+                        Logger.getLogger().log(TAG, Logger.Level.INFO, "Не удалось найти logout_id!");
                     Logger.getLogger().log(TAG, Logger.Level.DEBUG, "logout_id: " + settings.getString("logout_id", "null"));
                 } else onStateChange(R.string.auth_err, count, pref_auth_login_count);
 
@@ -125,8 +118,8 @@ public class AuthTask extends ITask {
         return TAG;
     }
 
-    public boolean isConnected() {
-        return WiFiHelper.isConnected(context, settings.getBoolean("pref_wifi_check_strict", true));
+    private boolean isConnected() {
+        return WiFiHelper.isConnected(App.get(), PreferenceManager.getDefaultSharedPreferences(App.get()).getBoolean("pref_wifi_check_strict", true));
     }
 
 

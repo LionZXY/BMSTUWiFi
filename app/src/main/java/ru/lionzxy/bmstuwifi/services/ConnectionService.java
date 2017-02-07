@@ -6,6 +6,7 @@ import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import ru.lionzxy.bmstuwifi.authentificator.AuthManager;
 import ru.lionzxy.bmstuwifi.authentificator.BMSTUStudentAuth;
 import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
@@ -35,7 +36,7 @@ public class ConnectionService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        if (intent != null && ACTION_STOP.equals(intent.getAction()) || !wifiManager.isWifiEnabled()) {
+        if (intent != null && ACTION_STOP.equals(intent.getAction()) || !wifiManager.isWifiEnabled() || AuthManager.getCurrentAuth(getBaseContext()) == null) {
             connectionThread.interrupt();
             logger.log(TAG, Logger.Level.DEBUG, "Stop service");
             stopSelf();

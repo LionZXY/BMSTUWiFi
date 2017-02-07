@@ -31,19 +31,12 @@
             android:key="pref_auth_count"
             android:summary="@string/pref_auth_login_count_descr"
             android:title="@string/pref_auth_login_count" />
-        <Preference android:title="@string/pref_auth_login_open">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:targetClass="ru.lionzxy.bmstuwifi.LoginActivity_"
-                android:targetPackage="ru.lionzxy.bmstuwifi" />
-
-        </Preference>
-        <Preference android:title="@string/pref_auth_login_changeLogin">
-            <intent
-                android:action="ru.lionzxy.bmstuwifi.LoginActivity.RESAVE_PSWD"
-                android:targetClass="ru.lionzxy.bmstuwifi.LoginActivity_"
-                android:targetPackage="ru.lionzxy.bmstuwifi" />
-        </Preference>
+        <Preference
+            android:key="openLogin"
+            android:title="@string/pref_auth_login_open" />
+        <Preference
+            android:key="changeLogin"
+            android:title="@string/pref_auth_login_changeLogin" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_about">
         <PreferenceScreen

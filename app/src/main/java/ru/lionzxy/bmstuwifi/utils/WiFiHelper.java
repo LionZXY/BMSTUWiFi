@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 
 import java.net.HttpURLConnection;
@@ -78,5 +79,9 @@ public class WiFiHelper {
             }
         }
         return null;
+    }
+
+    public static String getCurrentSSID(Context context){
+        return ((WifiManager) context.getSystemService(Context.WIFI_SERVICE)).getConnectionInfo().getSSID().replaceAll("\"","");
     }
 }

@@ -1,4 +1,4 @@
-package ru.lionzxy.bmstuwifi.tasks.interfaces;
+package ru.lionzxy.bmstuwifi.interfaces;
 
 import android.content.Context;
 import android.content.res.Resources;

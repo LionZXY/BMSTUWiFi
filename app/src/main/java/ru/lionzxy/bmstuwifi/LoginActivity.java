@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,15 +21,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.securepreferences.SecurePreferences;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import ru.lionzxy.bmstuwifi.authentificator.AuthManager;
+import ru.lionzxy.bmstuwifi.authentificator.IAuth;
 import ru.lionzxy.bmstuwifi.utils.AuthAsyncTaskLoader;
 import ru.lionzxy.bmstuwifi.utils.Notification;
 
@@ -38,12 +40,16 @@ import ru.lionzxy.bmstuwifi.utils.Notification;
 @EActivity(R.layout.login_activity)
 public class LoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Boolean> {
     public static final String ACTION_RESAVE_PSWD = "ru.lionzxy.bmstuwifi.LoginActivity.RESAVE_PSWD";
-    private ProgressDialog progressDialog;
-    private Notification notification;
+    private ProgressDialog progressDialog = null;
+    private AlertDialog wifiDialog = null;
+    private Notification notification = null;
+    private IAuth auth = null;
     @ViewById(R.id.editText_login)
     EditText editTextLogin;
     @ViewById(R.id.editText_password)
     EditText editTextPassword;
+    @ViewById(R.id.textSSID)
+    TextView wifiSSID;
     @ViewById(R.id.lgn_btn)
     Button button;
     @ViewById(R.id.rememberPassword)
@@ -53,6 +59,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @AfterViews
     protected void afterViews() {
+        String SSID = getIntent().getExtras() == null ? null : getIntent().getExtras().getString("wifi_ssid", null);
+        if (SSID == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.login_wifi_err)
+                    .setTitle(R.string.login_err);
+            builder.setNegativeButton(R.string.login_button_hide, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    wifiDialog.dismiss();
+                }
+            });
+            wifiDialog = builder.setCancelable(true).create();
+            wifiDialog.show();
+        } else {
+            auth = AuthManager.getAuthForSSID(SSID);
+            wifiSSID.setText(SSID);
+        }
+
         if (getIntent().getAction() != null && getIntent().getAction().equals(ACTION_RESAVE_PSWD)) {
             rememberPswd.setVisibility(View.GONE);
             button.setText(R.string.login_button_save);
@@ -61,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 public void onClick(View v) {
                     final String login = editTextLogin.getText().toString();
                     final String password = editTextPassword.getText().toString();
-                    App.get().getSharedPreferences().edit().putString("auth_user", login).putString("auth_pass", password).apply();
+                    auth.setLogin(login).setPassword(password);
 
                     Toast.makeText(LoginActivity.this, R.string.sucsesful, Toast.LENGTH_LONG).show();
                     LoginActivity.this.finish();
@@ -69,9 +93,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             });
         }
 
-        SecurePreferences securePreferences = new SecurePreferences(this);
-        editTextLogin.setText(securePreferences.getString("auth_user", ""));
-        editTextPassword.setText(securePreferences.getString("auth_pass", "").replaceAll(".", "*"));
+        editTextLogin.setText(auth.getLogin(""));
+        editTextPassword.setText(auth.getPassword("").replaceAll(".","*"));
 
         editTextLogin.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -120,17 +143,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 }
             }
         });
+
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(notification != null)
+            notification.hide();
+        if(progressDialog != null)
+            progressDialog.dismiss();
+        if(wifiDialog != null)
+            wifiDialog.dismiss();
+    }
 
     @Click(R.id.lgn_btn)
     public void onClick() {
         String login = editTextLogin.getText().toString();
         String password = editTextPassword.getText().toString();
 
-        SecurePreferences securePreferences = new SecurePreferences(this);
-        if (password.equals(securePreferences.getString("auth_pass", "").replaceAll(".", "*")))
-            password = securePreferences.getString("auth_pass", "");
+        if (password.equals(auth.getPassword("").replaceAll(".", "*")))
+            password = auth.getPassword("");
 
         notification = new Notification(this)
                 .setId(1)
@@ -150,9 +183,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             }
         });
 
+        auth.setPassword(password);
+        auth.setLogin(login);
+
         Bundle bundle = new Bundle();
-        bundle.putString("auth_user", login);
-        bundle.putString("auth_pass", password);
+        bundle.putString("wifi_id", auth.getNameid());
         getSupportLoaderManager().initLoader(0, bundle, this);
     }
 
@@ -166,10 +201,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @Override
     public void onLoadFinished(Loader<Boolean> loader, Boolean data) {
-        progressDialog.setMessage(getString(R.string.auth_finished));
         if (rememberPswd.isChecked() && data) {
-            new SecurePreferences(LoginActivity.this).edit().putString("auth_user", editTextLogin.getText().toString())
-                    .putString("auth_pass", editTextPassword.getText().toString()).apply();
+            progressDialog.setMessage(getString(R.string.auth_finished));
+            progressDialog.dismiss();
+            finish();
         }
     }
 

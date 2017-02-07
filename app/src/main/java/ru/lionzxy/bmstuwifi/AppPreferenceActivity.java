@@ -1,5 +1,7 @@
 package ru.lionzxy.bmstuwifi;
 
+import android.app.DialogFragment;
+import android.app.Fragment;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
 import android.content.AsyncTaskLoader;
@@ -13,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import ru.lionzxy.bmstuwifi.fragments.SSIDChoiseFragment;
 import ru.lionzxy.bmstuwifi.utils.LogoutAsyncTaskLoader;
 import ru.lionzxy.bmstuwifi.utils.Notification;
 import ru.lionzxy.bmstuwifi.utils.logs.Logger;
@@ -32,8 +35,8 @@ public class AppPreferenceActivity extends AppCompatActivity {
     }
 
     public static class AuthPreferenceFragment extends PreferenceFragment implements LoaderManager.LoaderCallbacks<Boolean> {
-        private ProgressDialog progressDialog;
-        private Notification notification;
+        private ProgressDialog progressDialog = null;
+        private Notification notification = null;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -60,12 +63,38 @@ public class AppPreferenceActivity extends AppCompatActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("logout_id", PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("logout_id", ""));
                     getLoaderManager().initLoader(1, bundle, AuthPreferenceFragment.this);
                     return true;
                 }
             });
             auth_cat.addPreference(logout);
+            findPreference("openLogin").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    new SSIDChoiseFragment().show(getFragmentManager(),"SSIDChoise");
+                    return true;
+                }
+            });
+            findPreference("changeLogin").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    DialogFragment fragment = new SSIDChoiseFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("action",LoginActivity.ACTION_RESAVE_PSWD);
+                    fragment.setArguments(bundle);
+                    fragment.show(getFragmentManager(),"SSIDChoise");
+                    return true;
+                }
+            });
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            if(notification != null)
+                notification.hide();
+            if(progressDialog != null)
+                progressDialog.dismiss();
         }
 
         @Override
@@ -89,7 +118,7 @@ public class AppPreferenceActivity extends AppCompatActivity {
             });
             switch (id) {
                 case 1: {
-                    AsyncTaskLoader<Boolean> asyncTaskLoader = new LogoutAsyncTaskLoader(getActivity(), progressDialog, notification, args.getString("logout_id"));
+                    AsyncTaskLoader<Boolean> asyncTaskLoader = new LogoutAsyncTaskLoader(getActivity(), progressDialog, notification);
                     asyncTaskLoader.forceLoad();
                     return asyncTaskLoader;
                 }

@@ -4,7 +4,6 @@ package ru.lionzxy.bmstuwifi;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -20,6 +19,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import ru.lionzxy.bmstuwifi.authentificator.AuthManager;
 import ru.lionzxy.bmstuwifi.interfaces.OnLogUpdate;
 import ru.lionzxy.bmstuwifi.services.ConnectionService;
 import ru.lionzxy.bmstuwifi.utils.AuthAsyncTaskLoader;
@@ -54,7 +54,7 @@ public class DebugActivity extends AppCompatActivity implements OnLogUpdate, Loa
         logText.setText(stringBuilder.toString());
 
         logger.subscribeOnUpdate(this);
-        logoutId.setText("logout_id: " + PreferenceManager.getDefaultSharedPreferences(this).getString("logout_id", "null"));
+        updateLogoutId();
     }
 
     @Click(R.id.button_connect)
@@ -62,7 +62,7 @@ public class DebugActivity extends AppCompatActivity implements OnLogUpdate, Loa
         Intent service = new Intent(this, ConnectionService.class);
         startService(service);
         Toast.makeText(this, R.string.debug_retry_service, Toast.LENGTH_LONG).show();
-        logoutId.setText("logout_id: " + PreferenceManager.getDefaultSharedPreferences(this).getString("logout_id", "null"));
+        updateLogoutId();
     }
 
     @CheckedChange(R.id.show_debug_log)
@@ -84,8 +84,7 @@ public class DebugActivity extends AppCompatActivity implements OnLogUpdate, Loa
             public void run() {
                 if (DebugActivity.this.level == Logger.Level.DEBUG || DebugActivity.this.level == level)
                     logText.append("[" + TAG + "] " + log + "\n");
-                logoutId.setText("logout_id: " + PreferenceManager.getDefaultSharedPreferences(DebugActivity.this).getString("logout_id", "null"));
-
+                updateLogoutId();
             }
         });
     }
@@ -104,6 +103,17 @@ public class DebugActivity extends AppCompatActivity implements OnLogUpdate, Loa
 
     @Override
     public void onLoaderReset(Loader<Boolean> loader) {
+    }
+
+    public void updateLogoutId() {
+        String tmpLogout;
+        StringBuilder tmpBuilder = new StringBuilder();
+        for (String ssid : AuthManager.getSSIDs()) {
+            tmpLogout = AuthManager.getAuthForSSID(ssid).getLogoutId(null);
+            if (tmpLogout != null)
+                tmpBuilder.append(AuthManager.getAuthForSSID(ssid).getNameid()).append("_logout: ").append(tmpLogout).append('\n');
+        }
+        logoutId.setText(tmpBuilder.toString());
     }
 
 }

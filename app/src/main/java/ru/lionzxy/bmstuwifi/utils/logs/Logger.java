@@ -72,7 +72,6 @@ public class Logger implements Parcelable {
         log(TAG, level, getContext().getString(resId));
     }
 
-    //TODO
     public void logAboutCrash(String TAG, Exception e) {
         FirebaseCrash.report(e);
         Log.e(TAG, "Pizdes", e);

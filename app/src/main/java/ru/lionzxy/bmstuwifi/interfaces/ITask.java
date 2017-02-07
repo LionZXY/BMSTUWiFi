@@ -1,4 +1,4 @@
-package ru.lionzxy.bmstuwifi.tasks.interfaces;
+package ru.lionzxy.bmstuwifi.interfaces;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public abstract class ITask {
-    private List<WeakReference<ITaskStateResponse>> taskWeakResponses = new ArrayList<>();
+    protected List<WeakReference<ITaskStateResponse>> taskWeakResponses = new ArrayList<>();
     private boolean isInterrupt = false;
 
     public void interrupt() {
