@@ -21,8 +21,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|top"
                 android:layout_margin="10dp"
-                android:enabled="true"
                 android:text="Test"
+                android:enabled="true"
                 android:textColor="@android:color/black"
                 android:textIsSelectable="true"
                 android:textSize="14sp" />
@@ -37,17 +37,10 @@
         android:layout_marginRight="10dp"
         android:text="@string/debug_show_log" />
 
-    <TextView
-        android:id="@+id/logoutIdText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="logout_id: Не определен" />
-
     <Button
         android:id="@+id/button_connect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="button_connect"
         android:text="@string/debug_retry" />
 </LinearLayout>

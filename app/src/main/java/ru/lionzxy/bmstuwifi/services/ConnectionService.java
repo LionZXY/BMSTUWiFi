@@ -6,9 +6,8 @@ import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import ru.lionzxy.bmstuwifi.authentificator.AuthManager;
 import ru.lionzxy.bmstuwifi.authentificator.BMSTUStudentAuth;
-import ru.lionzxy.bmstuwifi.utils.logs.Logger;
+import ru.lionzxy.bmstuwifi.utils.Logger;
 
 /**
  * Created by lionzxy on 04.11.16.
@@ -27,8 +26,9 @@ public class ConnectionService extends Service {
     public void onCreate() {
         super.onCreate();
 
+        Logger.getLogger().init(getBaseContext());
         wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
-        connectionThread = new DetectStateThread(getBaseContext(), new BMSTUStudentAuth(logger));
+        connectionThread = new DetectStateThread(getBaseContext(), new BMSTUStudentAuth(logger, this));
         logger.log(TAG, Logger.Level.DEBUG, "Service created");
 
     }
@@ -36,7 +36,7 @@ public class ConnectionService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        if (intent != null && ACTION_STOP.equals(intent.getAction()) || !wifiManager.isWifiEnabled() || AuthManager.getCurrentAuth(getBaseContext()) == null) {
+        if (intent != null && ACTION_STOP.equals(intent.getAction()) || !wifiManager.isWifiEnabled()) {
             connectionThread.interrupt();
             logger.log(TAG, Logger.Level.DEBUG, "Stop service");
             stopSelf();
@@ -44,7 +44,7 @@ public class ConnectionService extends Service {
         }
 
         if (connectionThread.getState().equals(Thread.State.TERMINATED))
-            connectionThread = new DetectStateThread(this, new BMSTUStudentAuth(logger));
+            connectionThread = new DetectStateThread(this, new BMSTUStudentAuth(logger, this));
 
         if (connectionThread.getState().equals(Thread.State.NEW))
             connectionThread.start();

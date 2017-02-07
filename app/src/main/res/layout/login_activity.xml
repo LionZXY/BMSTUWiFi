@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradientlogin">
+    android:background="@drawable/gradientlogin"
+    android:theme="@style/AppTheme.LoginActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -23,37 +24,10 @@
             <ImageView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
+                android:padding="30dp"
                 android:layout_gravity="center"
-                android:layout_marginBottom="0dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:paddingTop="30dp"
+                android:layout_margin="20dp"
                 android:src="@drawable/logo_white" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingBottom="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/whitegrey"
-                    android:text="@string/login_text_wifi"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:layout_marginLeft="10dp"
-                    android:id="@+id/textSSID"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/whitegrey"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/login_err"/>
-            </LinearLayout>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/editText_login"
@@ -61,7 +35,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:gravity="center"
-                android:maxLines="1"
                 android:hint="@string/login_login"
                 app:met_baseColor="@android:color/white"
                 app:met_errorColor="@android:color/white"
@@ -70,57 +43,41 @@
                 app:met_textColorHint="@android:color/white"
                 app:met_underlineColor="@android:color/white" />
 
-            <RelativeLayout
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/editText_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:hint="@string/login_password"
+                android:inputType="textPassword"
+                app:met_baseColor="@android:color/white"
+                app:met_errorColor="@android:color/white"
+                app:met_primaryColor="@android:color/white"
+                app:met_textColor="@android:color/white"
+                app:met_textColorHint="@android:color/white"
+                app:met_underlineColor="@android:color/white" />
 
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/editText_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:hint="@string/login_password"
-                    android:inputType="textPassword"
-                    app:met_baseColor="@android:color/white"
-                    app:met_errorColor="@android:color/white"
-                    app:met_primaryColor="@android:color/white"
-                    app:met_textColor="@android:color/white"
-                    app:met_textColorHint="@android:color/white"
-                    app:met_underlineColor="@android:color/white"
-                    android:maxLines="1" />
-
-                <ImageView
-                    android:id="@+id/editText_password_visible"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_visibility_off_white_24dp"
-                    android:visibility="gone" />
-            </RelativeLayout>
 
             <android.support.v7.widget.AppCompatCheckBox
+                android:textColor="@android:color/white"
                 android:id="@+id/rememberPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/login_rememberPassword"
-                android:textColor="@android:color/white"
-                app:buttonTint="@android:color/white" />
+                app:buttonTint="@android:color/white"
+                android:text="@string/login_rememberPassword" />
 
 
             <Button
+                android:clickable="true"
+                android:textColor="@android:color/white"
                 android:id="@+id/lgn_btn"
+                android:background="@drawable/border"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="30dp"
-                android:background="@drawable/border"
-                android:clickable="true"
-                android:text="@string/login_logBtn"
-                android:textColor="@android:color/white" />
+                android:text="@string/login_logBtn" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

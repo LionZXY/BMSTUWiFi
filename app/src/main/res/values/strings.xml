@@ -2,8 +2,6 @@
     <string name="app_name">Авторизация для Wi-Fi BMSTU</string>
     <string name="notfication_title">Подключение к WiFi</string>
 
-    <string name="toast_lwrite_permission_deny">Ну и чего ты наделал? :( Теперь я не смогу писать логи :( Хотя может это и к лучшему…</string>
-
     <string name="debug_name">Логи программы</string>
     <string name="debug_retry">Повторить попытку</string>
     <string name="debug_retry_service">Сервис соединения перезапущен</string>
@@ -22,8 +20,6 @@
     <string name="auth_get_data">Получение данных</string>
     <string name="auth_err_login">Неправильный логин и пароль</string>
     <string name="auth_finished">Авторизация прошла успешно ^_^</string>
-
-    <string name="auth_logout_error_ssid">В данный момент вы не подключенны к сети, которую поддерживает приложение</string>
     <string name="auth_logout">Выход из сети</string>
     <string name="auth_logout_start">Попытка выхода из сети…</string>
     <string name="auth_logout_end">Вроде получилось… Но ничего гарантировать не могу</string>
@@ -32,17 +28,8 @@
 
 
     <string name="sucsesful">Успешно</string>
-    <string name="login_err">Ощибка!</string>
-    <string name="login_wifi_choise">Выберите WiFi сеть…</string>
-    <string name="login_wifi_err">Ошибка! Отсутсвует название сети wifi! Это баг. Просьба об этом случае написать автору программы (Настройки -> О программе)</string>
-    <string name="login_text_wifi">Для сети:</string>
     <string name="login_button_save">Сохранить</string>
     <string name="login_button_hide">Скрыть</string>
-    <string name="login">Авторизация</string>
-    <string name="login_logBtn">Войти</string>
-    <string name="login_rememberPassword">Запомнить пароль</string>
-    <string name="login_password">Пароль</string>
-    <string name="login_login">Логин</string>
 
     <string name="pref_wifi">Настройки обнаружения</string>
     <string name="pref_wifi_autoconnect">Автоматическая авторизация в сети</string>
@@ -82,6 +69,11 @@
     <string name="about_me_email_send">Отправка письма…</string>
     <string name="about_me_email_err">У вас нет приложений для отправки письма</string>
 
+    <string name="login">Авторизация</string>
+    <string name="login_logBtn">Войти</string>
+    <string name="login_rememberPassword">Запомнить пароль</string>
+    <string name="login_password">Пароль</string>
+    <string name="login_login">Логин</string>
 
-    <string name="by">Никита Куликов (ИУ4–23)</string>
+    <string name="by">Никита Куликов (ИУ4–13)</string>
 </resources>
