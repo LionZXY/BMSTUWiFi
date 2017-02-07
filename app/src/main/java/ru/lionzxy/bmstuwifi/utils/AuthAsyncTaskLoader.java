@@ -9,19 +9,21 @@ import android.support.v4.content.AsyncTaskLoader;
 
 import java.lang.ref.WeakReference;
 
+import ru.lionzxy.bmstuwifi.authentificator.AuthManager;
+import ru.lionzxy.bmstuwifi.interfaces.ITaskStateResponse;
+import ru.lionzxy.bmstuwifi.interfaces.TaskResponseWithNotification;
 import ru.lionzxy.bmstuwifi.tasks.AuthTask;
-import ru.lionzxy.bmstuwifi.tasks.interfaces.ITaskStateResponse;
-import ru.lionzxy.bmstuwifi.tasks.interfaces.TaskResponseWithNotification;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
- * Created by lionzxy on 14.11.16.
+ * TODO Это очень плохое решение
  */
 
 public class AuthAsyncTaskLoader extends AsyncTaskLoader<Boolean> {
     private WeakReference<Activity> activityWeakReference;
     private WeakReference<ProgressDialog> progressDialogWeakReference;
     private WeakReference<Notification> notificationWeakReference;
-    private AuthTask authTask;
+    private AuthTask authTask = null;
 
 
     public AuthAsyncTaskLoader(Activity activity, @Nullable ProgressDialog progressDialog, @Nullable Notification notification, @NonNull Bundle args) {
@@ -29,7 +31,7 @@ public class AuthAsyncTaskLoader extends AsyncTaskLoader<Boolean> {
         this.activityWeakReference = new WeakReference<Activity>(activity);
         this.progressDialogWeakReference = new WeakReference<ProgressDialog>(progressDialog);
         this.notificationWeakReference = new WeakReference<Notification>(notification);
-        authTask = new AuthTask(getContext(), args.getString("auth_user", null), args.getString("auth_pass", null));
+        authTask = (AuthTask) AuthManager.getAuthFromId(args.getString("wifi_id")).registerInNetwork();
     }
 
     @Override
@@ -60,5 +62,16 @@ public class AuthAsyncTaskLoader extends AsyncTaskLoader<Boolean> {
     public void onCanceled(Boolean data) {
         super.onCanceled(data);
         authTask.interrupt();
+    }
+
+    @Override
+    protected void onAbandon() {
+        super.onAbandon();
+        if (notificationWeakReference.get() != null)
+            notificationWeakReference.get().hide();
+        if (progressDialogWeakReference.get() != null)
+            progressDialogWeakReference.get().dismiss();
+        if(authTask != null)
+            authTask.interrupt();
     }
 }

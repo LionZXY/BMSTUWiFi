@@ -11,13 +11,8 @@ android {
 
     if (versionPropsFile.canRead()) {
         def Properties versionProps = new Properties()
-
         versionProps.load(new FileInputStream(versionPropsFile))
-
-        def code = versionProps['VERSION_CODE'].toInteger() + 1
-
-        versionProps['VERSION_CODE']=code.toString()
-        versionProps.store(versionPropsFile.newWriter(), null)
+        def code = versionProps['VERSION_CODE'].toInteger()
 
         defaultConfig {
             applicationId "ru.lionzxy.bmstuwifi"
@@ -28,6 +23,11 @@ android {
 
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         }
+
+    }
+
+    applicationVariants.all { variant ->
+        variant.resValue "string", "versionName", variant.versionName
     }
 
     applicationVariants.all { variant ->
@@ -40,7 +40,15 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            versionPropsFile = file('version.properties')
+            def Properties versionProps = new Properties()
+            versionProps.load(new FileInputStream(versionPropsFile))
+            def code = versionProps['VERSION_CODE'].toInteger() + 1
+
+            versionProps['VERSION_CODE']=code.toString()
+            versionProps.store(versionPropsFile.newWriter(), null)
+
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -52,6 +60,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
     compile 'org.androidannotations:androidannotations-api:4.1.0'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'

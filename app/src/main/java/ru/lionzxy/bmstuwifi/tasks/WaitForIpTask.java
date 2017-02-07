@@ -3,8 +3,8 @@ package ru.lionzxy.bmstuwifi.tasks;
 import android.net.wifi.WifiManager;
 
 import ru.lionzxy.bmstuwifi.R;
-import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
-import ru.lionzxy.bmstuwifi.tasks.interfaces.ITaskStateResponse;
+import ru.lionzxy.bmstuwifi.interfaces.ITask;
+import ru.lionzxy.bmstuwifi.interfaces.ITaskStateResponse;
 
 /**
  * Created by lionzxy on 12.11.16.

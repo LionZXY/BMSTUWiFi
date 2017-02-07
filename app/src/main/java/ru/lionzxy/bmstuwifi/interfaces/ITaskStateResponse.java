@@ -1,4 +1,4 @@
-package ru.lionzxy.bmstuwifi.tasks.interfaces;
+package ru.lionzxy.bmstuwifi.interfaces;
 
 /**
  * Created by lionzxy on 12.11.16.
