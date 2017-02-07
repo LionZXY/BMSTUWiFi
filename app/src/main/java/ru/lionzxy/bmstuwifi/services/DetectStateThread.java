@@ -9,15 +9,14 @@ import android.preference.PreferenceManager;
 
 import ru.lionzxy.bmstuwifi.DebugActivity_;
 import ru.lionzxy.bmstuwifi.R;
+import ru.lionzxy.bmstuwifi.authentificator.AuthManager;
 import ru.lionzxy.bmstuwifi.authentificator.IAuth;
+import ru.lionzxy.bmstuwifi.interfaces.ITask;
+import ru.lionzxy.bmstuwifi.interfaces.TaskResponseWithNotification;
 import ru.lionzxy.bmstuwifi.tasks.AuthTask;
 import ru.lionzxy.bmstuwifi.tasks.WaitForIpTask;
-import ru.lionzxy.bmstuwifi.tasks.WaitSSID;
-import ru.lionzxy.bmstuwifi.tasks.interfaces.ITask;
-import ru.lionzxy.bmstuwifi.tasks.interfaces.ITaskStateResponse;
-import ru.lionzxy.bmstuwifi.tasks.interfaces.TaskResponseWithNotification;
-import ru.lionzxy.bmstuwifi.utils.Logger;
 import ru.lionzxy.bmstuwifi.utils.Notification;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 import static ru.lionzxy.bmstuwifi.utils.WiFiHelper.isConnected;
 
@@ -55,23 +54,6 @@ public class DetectStateThread extends Thread {
 
     @Override
     public void run() {
-        //State 1 - WaitSSID and check
-        WaitSSID waitSSID = (WaitSSID) new WaitSSID(wifiManager, Integer.parseInt(settings.getString("pref_ssid_wait", "10")))
-                .subscribeOnStateChange(new ITaskStateResponse() {
-                    @Override
-                    public void onStateChange(String TAG, int stateDescribtionResId, int stateNumber, int stateCount) {
-                        Logger.getLogger().log(TAG, Logger.Level.DEBUG, stateDescribtionResId);
-                    }
-                });
-        currentTask = waitSSID;
-        if (waitSSID.runTask()) {
-            if (!auth.isValidSSID(waitSSID.Last_SSID))
-                return;
-        } else {
-            onError();
-            return;
-        }
-
         if (isInterrupted())
             return;
 
@@ -98,15 +80,16 @@ public class DetectStateThread extends Thread {
 
         if (isInterrupted())
             return;
-
+        IAuth auth = AuthManager.getCurrentAuth(context);
         //State 3 - Auth
-        AuthTask authTask = (AuthTask) new AuthTask(context).subscribeOnStateChange(new TaskResponseWithNotification(notification));
-        currentTask = authTask;
-        if (authTask.runTask()) {
-            onFinished();
-            Logger.getLogger().log(TAG, Logger.Level.INFO, "YAY!");
-        } else Logger.getLogger().log(TAG, Logger.Level.INFO, ":(");
-
+        if (auth != null) {
+            AuthTask authTask = (AuthTask) auth.registerInNetwork().subscribeOnStateChange(new TaskResponseWithNotification(notification));
+            currentTask = authTask;
+            if (authTask.runTask()) {
+                onFinished();
+                Logger.getLogger().log(TAG, Logger.Level.INFO, "YAY!");
+            } else Logger.getLogger().log(TAG, Logger.Level.INFO, ":(");
+        } else onError();
     }
 
     void onError() {
@@ -121,7 +104,6 @@ public class DetectStateThread extends Thread {
     @Override
     public void interrupt() {
         super.interrupt();
-        settings.edit().remove("logout_id").apply();
         if (currentTask != null)
             currentTask.interrupt();
         if (notification != null)

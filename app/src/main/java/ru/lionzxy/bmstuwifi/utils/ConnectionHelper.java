@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 import ru.lionzxy.bmstuwifi.R;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
  * Created by lionzxy on 06.11.16.

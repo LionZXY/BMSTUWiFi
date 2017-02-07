@@ -7,32 +7,35 @@ import android.support.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
 
+import ru.lionzxy.bmstuwifi.authentificator.AuthManager;
+import ru.lionzxy.bmstuwifi.authentificator.IAuth;
+import ru.lionzxy.bmstuwifi.interfaces.ITaskStateResponse;
+import ru.lionzxy.bmstuwifi.interfaces.TaskResponseWithNotification;
 import ru.lionzxy.bmstuwifi.tasks.LogoutTask;
-import ru.lionzxy.bmstuwifi.tasks.interfaces.ITaskStateResponse;
-import ru.lionzxy.bmstuwifi.tasks.interfaces.TaskResponseWithNotification;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
- * Created by lionzxy on 17.11.16.
+ * //TODO и это плохое решение
  */
 
 public class LogoutAsyncTaskLoader extends AsyncTaskLoader<Boolean> {
     private WeakReference<Activity> activityWeakReference;
     private WeakReference<ProgressDialog> progressDialogWeakReference;
     private WeakReference<Notification> notificationWeakReference;
-    private LogoutTask logoutTask;
+    private IAuth auth = null;
 
-    public LogoutAsyncTaskLoader(Activity activity, @Nullable ProgressDialog progressDialog, @Nullable Notification notification, String logout_id) {
+    public LogoutAsyncTaskLoader(Activity activity, @Nullable ProgressDialog progressDialog, @Nullable Notification notification) {
         super(activity);
         this.activityWeakReference = new WeakReference<Activity>(activity);
         this.progressDialogWeakReference = new WeakReference<ProgressDialog>(progressDialog);
         this.notificationWeakReference = new WeakReference<Notification>(notification);
-        this.logoutTask = new LogoutTask(logout_id);
+        this.auth = AuthManager.getCurrentAuth(getContext());
     }
 
     @Override
     public Boolean loadInBackground() {
         final TaskResponseWithNotification taskResponseWithNotification = new TaskResponseWithNotification(notificationWeakReference.get());
-        return logoutTask.subscribeOnStateChange(new ITaskStateResponse() {
+        return new LogoutTask(auth).subscribeOnStateChange(new ITaskStateResponse() {
             @Override
             public void onStateChange(final String TAG, final int stateDescribtionResId, final int stateNumber, final int stateCount) {
                 activityWeakReference.get().runOnUiThread(new Runnable() {
@@ -48,8 +51,24 @@ public class LogoutAsyncTaskLoader extends AsyncTaskLoader<Boolean> {
                         }
                     }
                 });
-                Logger.getLogger().log(TAG, Logger.Level.INFO, activityWeakReference.get().getString(stateDescribtionResId));
+                Logger.getLogger().log(TAG, Logger.Level.INFO, getContext().getString(stateDescribtionResId));
             }
         }).runTask();
     }
+
+    public IAuth getAuth() {
+        return auth;
+    }
+
+    @Override
+    protected void onAbandon() {
+        super.onAbandon();
+        if (notificationWeakReference.get() != null)
+            notificationWeakReference.get().hide();
+        if(progressDialogWeakReference.get() != null)
+            progressDialogWeakReference.get().dismiss();
+
+    }
+
+
 }

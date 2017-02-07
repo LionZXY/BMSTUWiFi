@@ -1,4 +1,4 @@
-package ru.lionzxy.bmstuwifi.utils;
+package ru.lionzxy.bmstuwifi.utils.logs;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,25 +8,24 @@ import android.util.Log;
 
 import com.google.firebase.crash.FirebaseCrash;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import ru.lionzxy.bmstuwifi.App;
+import ru.lionzxy.bmstuwifi.interfaces.OnLogUpdate;
 
 
 public class Logger implements Parcelable {
     public enum Level {
         DEBUG,
         INFO,
-        ERROR;
-    }
-
-    public interface OnLogUpdate {
-        void onLogUpdate(Level level, String TAG, String log);
+        ERROR
     }
 
     private ArrayList<OnLogUpdate> onLogUpdates = new ArrayList<>();
-    private final static Logger INSTANCE = new Logger();
+    private static Logger INSTANCE = new Logger();
     private HashMap<Level, ArrayList<String>> log;
-    private Context con = null;
 
     public static Logger getLogger() {
         return INSTANCE;
@@ -55,30 +54,27 @@ public class Logger implements Parcelable {
     }
 
     public void log(String TAG, Level level, String message) {
+
         if (level == Level.INFO) {
-            log.get(Level.INFO).add("[" + TAG + "] " + message);
+            log.get(Level.INFO).add("[" + TAG + "] " + "[" + new Date(System.currentTimeMillis()) + "] " + message);
         }
         log.get(Level.DEBUG).add("[" + TAG + "] " + message);
         for (OnLogUpdate update : onLogUpdates)
             try {
                 update.onLogUpdate(level, TAG, message);
             } catch (Exception e) {
+                logAboutCrash(TAG, e);
                 Log.e(TAG, "Ошибка в отправке события обновления лога", e);
             }
     }
 
     public void log(String TAG, Level level, int resId) {
-        if (con != null)
-            log(TAG, level, con.getString(resId));
+        log(TAG, level, getContext().getString(resId));
     }
 
-    public void init(Context context) {
-        this.con = context;
-    }
-
-    //TODO
     public void logAboutCrash(String TAG, Exception e) {
-
+        FirebaseCrash.report(e);
+        Log.e(TAG, "Pizdes", e);
     }
 
     public ArrayList<String> getLogByLevel(Level level) {
@@ -120,4 +116,9 @@ public class Logger implements Parcelable {
         bundle.putSerializable("logger", log);
         dest.writeBundle(bundle);
     }
+
+    public Context getContext() {
+        return App.get().getBaseContext();
+    }
+
 }

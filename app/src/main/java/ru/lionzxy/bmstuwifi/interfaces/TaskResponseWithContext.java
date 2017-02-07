@@ -1,9 +1,9 @@
-package ru.lionzxy.bmstuwifi.tasks.interfaces;
+package ru.lionzxy.bmstuwifi.interfaces;
 
 import android.content.Context;
 import android.content.res.Resources;
 
-import ru.lionzxy.bmstuwifi.utils.Logger;
+import ru.lionzxy.bmstuwifi.utils.logs.Logger;
 
 /**
  * Created by lionzxy on 12.11.16.
