@@ -16,6 +16,7 @@ public abstract class IAuth {
     public IAuth(Logger logger, String nameid, String SSID) {
         this.SSID = SSID;
         this.logger = logger;
+        this.nameid = nameid;
     }
 
     public abstract void stop();
@@ -50,6 +51,7 @@ public abstract class IAuth {
 
     public IAuth setLogin(String login) {
         App.get().getSharedPreferences().edit().putString(getNameid() + "_login", login).apply();
+
         return this;
     }
 

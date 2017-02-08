@@ -40,7 +40,7 @@ public class LogFile implements OnLogUpdate, OnAppTerminate {
     @Override
     public void onLogUpdate(Logger.Level level, String TAG, String log) {
         try {
-            fileStream.write("[" + level.name() + "][" + TAG + "] " + log);
+            fileStream.write("[" + level.name() + "][" + TAG + "] " + log + "\n");
             fileStream.flush();
         } catch (Exception e) {
             Logger.getLogger().logAboutCrash("LogFile", e);

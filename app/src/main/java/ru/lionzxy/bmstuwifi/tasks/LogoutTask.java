@@ -1,6 +1,8 @@
 package ru.lionzxy.bmstuwifi.tasks;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -11,12 +13,14 @@ import ru.lionzxy.bmstuwifi.R;
 import ru.lionzxy.bmstuwifi.authentificator.IAuth;
 import ru.lionzxy.bmstuwifi.interfaces.ITask;
 import ru.lionzxy.bmstuwifi.interfaces.ITaskStateResponse;
+import ru.lionzxy.bmstuwifi.interfaces.OnLogoutIdAvailable;
 
 /**
  * Created by lionzxy on 17.11.16.
  */
 
 public class LogoutTask extends ITask {
+    private static final List<OnLogoutIdAvailable> subscribeListOnLogoutAviliable = new ArrayList<>();
     private static final String TAG = "LogOut";
     private IAuth auth;
     private final OkHttpClient client;
@@ -69,5 +73,15 @@ public class LogoutTask extends ITask {
     @Override
     public String getTag() {
         return TAG;
+    }
+
+    public static void subscribeListOnLogoutAvailable(OnLogoutIdAvailable listener) {
+        if (listener != null && !subscribeListOnLogoutAviliable.contains(listener))
+            subscribeListOnLogoutAviliable.add(listener);
+    }
+
+    public static void notifyAboutLogout(IAuth auth) {
+        for(OnLogoutIdAvailable listener : subscribeListOnLogoutAviliable)
+            listener.logoutIdAvailable(auth);
     }
 }

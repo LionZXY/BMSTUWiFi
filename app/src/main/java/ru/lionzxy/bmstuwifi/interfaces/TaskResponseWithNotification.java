@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import ru.lionzxy.bmstuwifi.App;
 import ru.lionzxy.bmstuwifi.utils.Notification;
@@ -43,12 +44,13 @@ public class TaskResponseWithNotification implements ITaskStateResponse, ICanOpe
         if (action != null)
             notificationIntent.setAction(action);
 
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         PendingIntent intent = PendingIntent.getActivity(App.get(), 0,
-                notificationIntent, 0);
+                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         notification.getBuilder().setContentIntent(intent);
+        notification.show();
     }
 }

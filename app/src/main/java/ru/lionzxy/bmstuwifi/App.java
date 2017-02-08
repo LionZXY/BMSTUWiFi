@@ -42,9 +42,10 @@ public class App extends MultiDexApplication {
         if (mSecurePrefs == null) {
             mSecurePrefs = new SecurePreferences(this);
         }
-
-        mSecurePrefs.edit().putString("lb_login", mSecurePrefs.getString("auth_pass", null))
-                .putString("lb_password", mSecurePrefs.getString("auth_user", null)).apply(); //Подготовка к будущему апдейту
+        if (mSecurePrefs.getString("auth_pass", null) != null || mSecurePrefs.getString("auth_user", null) != null) {
+            mSecurePrefs.edit().putString("lb_login", mSecurePrefs.getString("auth_pass", null))
+                    .putString("lb_password", mSecurePrefs.getString("auth_user", null)).remove("auth_pass").remove("auth_user").apply();
+        }
 
 
         return mSecurePrefs;

@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,7 +57,7 @@ public class AuthTask extends ITask {
                 if (taskStateResponseWeakReference.get() != null && taskStateResponseWeakReference.get() instanceof ICanOpenActivity) {
                     Bundle extra = new Bundle();
                     extra.putString("wifi_ssid", auth.getSSID());
-                    ((ICanOpenActivity) taskStateResponseWeakReference.get()).openActivity(LoginActivity_.class, null, null);
+                    ((ICanOpenActivity) taskStateResponseWeakReference.get()).openActivity(LoginActivity_.class, extra, null);
                 }
             return false;
         }
@@ -80,10 +79,9 @@ public class AuthTask extends ITask {
                         .build();
 
                 onStateChange(R.string.auth_send_data, count, pref_auth_login_count);
-                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(App.get());
                 Response response = client.newCall(request).execute();
                 if (response.isSuccessful()) {
-                    Logger.getLogger().log(TAG, Logger.Level.DEBUG, "logout_id: " + settings.getString("logout_id", "null"));
+                    Logger.getLogger().log(TAG, Logger.Level.DEBUG, auth.getNameid() + "_logout: " + auth.getLogoutId(null));
                     onStateChange(R.string.auth_finished);
                     String resp = response.body().string();
                     Logger.getLogger().log(TAG, Logger.Level.DEBUG, resp);
@@ -91,16 +89,16 @@ public class AuthTask extends ITask {
                     if (matcher.find()) {
                         String logout_id = matcher.group(1);
                         logout_id = logout_id.substring(1, logout_id.length() - 2);
-                        settings.edit().putString("logout_id", logout_id).apply();
-                        Logger.getLogger().log(TAG, Logger.Level.INFO, "Авторизация прошла успешно. logout_id = " + logout_id);
+                        auth.setLogoutId(logout_id);
+                        LogoutTask.notifyAboutLogout(auth);
+                        Logger.getLogger().log(TAG, Logger.Level.INFO, "Авторизация прошла успешно. " + auth.getNameid() + "_logout = " + logout_id);
                     } else
                         Logger.getLogger().log(TAG, Logger.Level.INFO, "Не удалось найти logout_id!");
-                    Logger.getLogger().log(TAG, Logger.Level.DEBUG, "logout_id: " + settings.getString("logout_id", "null"));
+                    Logger.getLogger().log(TAG, Logger.Level.DEBUG, auth.getNameid() + "_logout: " + auth.getLogoutId(null));
                 } else onStateChange(R.string.auth_err, count, pref_auth_login_count);
-
-
+                
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.getLogger().logAboutCrash(TAG, e);
                 onStateChange(R.string.auth_err, count, pref_auth_login_count);
             }
 

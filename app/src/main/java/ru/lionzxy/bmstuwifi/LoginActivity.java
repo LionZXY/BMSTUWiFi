@@ -14,6 +14,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.SingleLineTransformationMethod;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -72,6 +73,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             });
             wifiDialog = builder.setCancelable(true).create();
             wifiDialog.show();
+            auth = AuthManager.getCurrentAuth(this);
         } else {
             auth = AuthManager.getAuthForSSID(SSID);
             wifiSSID.setText(SSID);
@@ -94,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         }
 
         editTextLogin.setText(auth.getLogin(""));
-        editTextPassword.setText(auth.getPassword("").replaceAll(".","*"));
+        editTextPassword.setText(auth.getPassword("").replaceAll(".", "*"));
 
         editTextLogin.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -149,11 +151,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     protected void onPause() {
         super.onPause();
-        if(notification != null)
+        if (notification != null)
             notification.hide();
-        if(progressDialog != null)
+        if (progressDialog != null)
             progressDialog.dismiss();
-        if(wifiDialog != null)
+        if (wifiDialog != null)
             wifiDialog.dismiss();
     }
 
@@ -182,9 +184,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 progressDialog.dismiss();
             }
         });
+        if (rememberPswd.isChecked()) {
+            auth.setPassword(password);
+            auth.setLogin(login);
+        } //TODO
 
-        auth.setPassword(password);
-        auth.setLogin(login);
+        Log.d("TAG", auth.getLogin("Нет"));
+        Log.d("TAG", auth.getPassword("Нет"));
 
         Bundle bundle = new Bundle();
         bundle.putString("wifi_id", auth.getNameid());

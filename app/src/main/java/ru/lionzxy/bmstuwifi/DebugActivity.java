@@ -8,8 +8,10 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,9 @@ public class DebugActivity extends AppCompatActivity implements OnLogUpdate, Loa
     private Logger.Level level = Logger.Level.INFO;
     private Logger logger = Logger.getLogger();
     private ProgressDialog progressDialog;
+
+    @ViewById(R.id.scrollView)
+    ScrollView scrollView;
 
     @ViewById(R.id.text_messages)
     TextView logText;
@@ -114,6 +119,12 @@ public class DebugActivity extends AppCompatActivity implements OnLogUpdate, Loa
                 tmpBuilder.append(AuthManager.getAuthForSSID(ssid).getNameid()).append("_logout: ").append(tmpLogout).append('\n');
         }
         logoutId.setText(tmpBuilder.toString());
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });
     }
 
 }

@@ -57,10 +57,11 @@ public class DetectStateThread extends Thread {
         if (isInterrupted())
             return;
 
-
+        TaskResponseWithNotification taskResponseWithNotification = new TaskResponseWithNotification(notification);
+        taskResponseWithNotification.openActivity(DebugActivity_.class, null, null);
         //State 2 - Wait For IP
         WaitForIpTask waitForIpTask = (WaitForIpTask) new WaitForIpTask(wifiManager, Integer.parseInt(settings.getString("pref_ip_wait", "30")))
-                .subscribeOnStateChange(new TaskResponseWithNotification(notification));
+                .subscribeOnStateChange(taskResponseWithNotification);
         currentTask = waitForIpTask;
         if (waitForIpTask.runTask()) {
             notification.setContinuous().setText(R.string.wait_ip_sucs).show();
@@ -83,7 +84,7 @@ public class DetectStateThread extends Thread {
         IAuth auth = AuthManager.getCurrentAuth(context);
         //State 3 - Auth
         if (auth != null) {
-            AuthTask authTask = (AuthTask) auth.registerInNetwork().subscribeOnStateChange(new TaskResponseWithNotification(notification));
+            AuthTask authTask = (AuthTask) auth.registerInNetwork().subscribeOnStateChange(taskResponseWithNotification);
             currentTask = authTask;
             if (authTask.runTask()) {
                 onFinished();

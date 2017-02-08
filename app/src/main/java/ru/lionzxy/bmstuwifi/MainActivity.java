@@ -22,6 +22,8 @@ import org.androidannotations.annotations.ViewById;
 import ru.lionzxy.bmstuwifi.authentificator.AuthManager;
 import ru.lionzxy.bmstuwifi.authentificator.IAuth;
 import ru.lionzxy.bmstuwifi.fragments.SSIDChoiseFragment;
+import ru.lionzxy.bmstuwifi.interfaces.OnLogoutIdAvailable;
+import ru.lionzxy.bmstuwifi.tasks.LogoutTask;
 import ru.lionzxy.bmstuwifi.utils.Constant;
 import ru.lionzxy.bmstuwifi.utils.LogoutAsyncTaskLoader;
 import ru.lionzxy.bmstuwifi.utils.Notification;
@@ -33,7 +35,7 @@ import ru.lionzxy.bmstuwifi.utils.logs.Logger;
  * Created by lionzxy on 27.11.16.
  */
 @EActivity(R.layout.activity_main)
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Boolean> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Boolean>, OnLogoutIdAvailable {
     private ProgressDialog progressDialog = null;
     private Notification notification = null;
     @ViewById(R.id.logout)
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         IAuth auth = AuthManager.getAuthForSSID(WiFiHelper.getCurrentSSID(this));
         if (auth != null && auth.getLogoutId(null) != null)
             logoutView.setVisibility(View.VISIBLE);
+
+        LogoutTask.subscribeListOnLogoutAvailable(this);
     }
 
     @Click(R.id.auth)
@@ -150,5 +154,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(android.content.Loader<Boolean> loader) {
 
+    }
+
+    @Override
+    public void logoutIdAvailable(IAuth auth) {
+        if(auth != null && AuthManager.getCurrentAuth(getBaseContext()) == auth)
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    logoutView.setVisibility(View.VISIBLE);
+                }
+            });
     }
 }

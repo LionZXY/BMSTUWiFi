@@ -56,7 +56,7 @@ public class Logger implements Parcelable {
     public void log(String TAG, Level level, String message) {
 
         if (level == Level.INFO) {
-            log.get(Level.INFO).add("[" + TAG + "] " + "[" + new Date(System.currentTimeMillis()) + "] " + message);
+            log.get(Level.INFO).add("[" + TAG + "] " + "[" + System.currentTimeMillis() + "] " + message);
         }
         log.get(Level.DEBUG).add("[" + TAG + "] " + message);
         for (OnLogUpdate update : onLogUpdates)
