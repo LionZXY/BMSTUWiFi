@@ -144,6 +144,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             }
         });
 
+
+
+        editTextLogin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    editTextLogin.setHint("");
+                }
+                else {
+                    editTextLogin.setHint(getString(R.string.login_login));
+                }
+            }
+        });
+
+        editTextPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    editTextPassword.setHint("");
+                } else {
+                    editTextPassword.setHint(getString(R.string.login_password));
+                }
+            }
+        });
     }
 
     @Override
