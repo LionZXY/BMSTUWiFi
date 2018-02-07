@@ -1,9 +1,12 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-allopen'
+apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    compileSdkVersion 27
+    buildToolsVersion '26.0.2'
     lintOptions {
         abortOnError false
     }
@@ -17,7 +20,7 @@ android {
         defaultConfig {
             applicationId "ru.lionzxy.bmstuwifi"
             minSdkVersion 15
-            targetSdkVersion 24
+            targetSdkVersion 27
             versionCode code
             versionName = "1.1.".concat(versionCode.toString()).concat('_alpha');
 
@@ -31,8 +34,8 @@ android {
     }
 
     applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            output.outputFile = new File(
+        variant.outputs.all { output ->
+            output.outputFileName = new File(
                     output.outputFile.parent,
                     "wifi-for-bmstu-${variant.versionName}.apk")
         }
@@ -45,7 +48,7 @@ android {
             versionProps.load(new FileInputStream(versionPropsFile))
             def code = versionProps['VERSION_CODE'].toInteger() + 1
 
-            versionProps['VERSION_CODE']=code.toString()
+            versionProps['VERSION_CODE'] = code.toString()
             versionProps.store(versionPropsFile.newWriter(), null)
 
             minifyEnabled true
@@ -60,16 +63,25 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.squareup.okhttp3:okhttp:3.4.2'
-    compile 'org.androidannotations:androidannotations-api:4.1.0'
+    compile 'com.android.support:multidex:1.0.2'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'org.androidannotations:androidannotations-api:4.4.0'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'com.scottyab:secure-preferences-lib:0.1.4'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.google.firebase:firebase-core:9.8.0'
-    compile 'com.google.firebase:firebase-crash:9.8.0'
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:support-v4:27.0.2'
+    compile 'com.google.firebase:firebase-core:11.8.0'
+    compile 'com.google.firebase:firebase-crash:11.8.0'
     testCompile 'junit:junit:4.12'
-    apt 'org.androidannotations:androidannotations:4.1.0'
+    kapt 'org.androidannotations:androidannotations:4.4.0'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+
+allOpen {
+    annotation("org.androidannotations.api.KotlinOpen")
 }
 
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}
