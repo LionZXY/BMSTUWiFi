@@ -5,16 +5,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.SingleLineTransformationMethod;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -30,21 +26,14 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import ru.lionzxy.bmstuwifi.authentificator.AuthManager;
-import ru.lionzxy.bmstuwifi.authentificator.IAuth;
-import ru.lionzxy.bmstuwifi.utils.AuthAsyncTaskLoader;
-import ru.lionzxy.bmstuwifi.utils.Notification;
+import ru.lionzxy.bmstuwifi.utils.Notify;
 
 /**
  * Created by lionzxy on 05.11.16.
  */
 @EActivity(R.layout.login_activity)
-public class LoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Boolean> {
+public class LoginActivity extends AppCompatActivity {
     public static final String ACTION_RESAVE_PSWD = "ru.lionzxy.bmstuwifi.LoginActivity.RESAVE_PSWD";
-    private ProgressDialog progressDialog = null;
-    private AlertDialog wifiDialog = null;
-    private Notification notification = null;
-    private IAuth auth = null;
     @ViewById(R.id.editText_login)
     EditText editTextLogin;
     @ViewById(R.id.editText_password)
@@ -57,6 +46,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     CheckBox rememberPswd;
     @ViewById(R.id.editText_password_visible)
     ImageView editTextPasswordVisible;
+    private ProgressDialog progressDialog = null;
+    private AlertDialog wifiDialog = null;
+    private Notify notification = null;
 
     @AfterViews
     protected void afterViews() {
@@ -73,9 +65,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             });
             wifiDialog = builder.setCancelable(true).create();
             wifiDialog.show();
-            auth = AuthManager.getCurrentAuth(this);
         } else {
-            auth = AuthManager.getAuthForSSID(SSID);
             wifiSSID.setText(SSID);
         }
 
@@ -87,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 public void onClick(View v) {
                     final String login = editTextLogin.getText().toString();
                     final String password = editTextPassword.getText().toString();
-                    auth.setLogin(login).setPassword(password);
+                    //auth.setLogin(login).setPassword(password);
 
                     Toast.makeText(LoginActivity.this, R.string.sucsesful, Toast.LENGTH_LONG).show();
                     LoginActivity.this.finish();
@@ -95,8 +85,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             });
         }
 
-        editTextLogin.setText(auth.getLogin(""));
-        editTextPassword.setText(auth.getPassword("").replaceAll(".", "*"));
+        //editTextLogin.setText(auth.getLogin(""));
+        //editTextPassword.setText(auth.getPassword("").replaceAll(".", "*"));
 
         editTextLogin.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -164,14 +154,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         String login = editTextLogin.getText().toString();
         String password = editTextPassword.getText().toString();
 
-        if (password.equals(auth.getPassword("").replaceAll(".", "*")))
-            password = auth.getPassword("");
+        //if (password.equals(auth.getPassword("").replaceAll(".", "*")))
+        //    password = auth.getPassword("");
 
-        notification = new Notification(this)
+        /*notification = new Notify(this)
                 .setId(1)
                 .setEnabled(true)
                 .setTitle(getString(R.string.auth))
-                .setIcon(R.drawable.ic_stat_logo);
+                .setIcon(R.drawable.ic_stat_logo);*/
 
         notification.show();
 
@@ -185,38 +175,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             }
         });
         if (rememberPswd.isChecked()) {
-            auth.setPassword(password);
-            auth.setLogin(login);
+            //auth.setPassword(password);
+            //auth.setLogin(login);
         } //TODO
 
-        Log.d("TAG", auth.getLogin("Нет"));
-        Log.d("TAG", auth.getPassword("Нет"));
+        //Log.d("TAG", auth.getLogin("Нет"));
+        //Log.d("TAG", auth.getPassword("Нет"));
 
         Bundle bundle = new Bundle();
-        bundle.putString("wifi_id", auth.getNameid());
-        getSupportLoaderManager().initLoader(0, bundle, this);
+        //bundle.putString("wifi_id", auth.getNameid());
+        //getSupportLoaderManager().initLoader(0, bundle, this);
     }
 
-
-    @Override
-    public Loader<Boolean> onCreateLoader(int id, Bundle args) {
-        AsyncTaskLoader<Boolean> asyncTaskLoader = new AuthAsyncTaskLoader(this, progressDialog, notification, args);
-        asyncTaskLoader.forceLoad();
-        return asyncTaskLoader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Boolean> loader, Boolean data) {
-        if (rememberPswd.isChecked() && data) {
-            progressDialog.setMessage(getString(R.string.auth_finished));
-            progressDialog.dismiss();
-            finish();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Boolean> loader) {
-        //TODO
-    }
 
 }

@@ -64,7 +64,7 @@ dependencies {
     })
 
     compile 'com.android.support:multidex:1.0.2'
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'org.jsoup:jsoup:+'
     compile 'org.androidannotations:androidannotations-api:4.4.0'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'com.scottyab:secure-preferences-lib:0.1.4'
@@ -72,6 +72,8 @@ dependencies {
     compile 'com.android.support:support-v4:27.0.2'
     compile 'com.google.firebase:firebase-core:11.8.0'
     compile 'com.google.firebase:firebase-crash:11.8.0'
+    compile 'com.squareup.okhttp3:okhttp:3.9.1'
+
     testCompile 'junit:junit:4.12'
     kapt 'org.androidannotations:androidannotations:4.4.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

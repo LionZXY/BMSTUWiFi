@@ -40,7 +40,7 @@
         <service android:name=".services.ConnectionService" />
 
         <receiver
-            android:name=".events.handlers.ChangeWifiStateHandler"
+            android:name=".services.NetworkReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

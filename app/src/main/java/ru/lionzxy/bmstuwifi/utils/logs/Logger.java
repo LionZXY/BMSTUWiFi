@@ -8,49 +8,51 @@ import android.util.Log;
 
 import com.google.firebase.crash.FirebaseCrash;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import ru.lionzxy.bmstuwifi.App;
-import ru.lionzxy.bmstuwifi.interfaces.OnLogUpdate;
 
 
 public class Logger implements Parcelable {
-    public enum Level {
-        DEBUG,
-        INFO,
-        ERROR
-    }
+    public static final Creator<Logger> CREATOR = new Creator<Logger>() {
+        @Override
+        public Logger createFromParcel(Parcel in) {
 
-    private ArrayList<OnLogUpdate> onLogUpdates = new ArrayList<>();
+            return new Logger(in);
+        }
+
+        @Override
+        public Logger[] newArray(int size) {
+            return new Logger[size];
+        }
+    };
     private static Logger INSTANCE = new Logger();
     private HashMap<Level, ArrayList<String>> log;
-
-    public static Logger getLogger() {
-        return INSTANCE;
-    }
 
     public Logger() {
         log = new HashMap<>();
         log.put(Level.DEBUG, new ArrayList<String>());
         log.put(Level.INFO, new ArrayList<String>());
-        subscribeOnUpdate(new OnLogUpdate() {
-            @Override
-            public void onLogUpdate(Level level, String TAG, String log) {
-                if (level == Level.INFO)
-                    Log.i(TAG, log);
-                if (level == Level.ERROR)
-                    Log.e(TAG, log);
-                Log.d(TAG, log);
-            }
-        });
-        subscribeOnUpdate(new OnLogUpdate() {
-            @Override
-            public void onLogUpdate(Level level, String TAG, String log) {
-                FirebaseCrash.log("[" + TAG + "] " + log);
-            }
-        });
+
+    }
+
+    protected Logger(Parcel in) {
+        Bundle bundle = in.readBundle(getClass().getClassLoader());
+        if (bundle.getSerializable("logger") != null && bundle.getSerializable("logger") instanceof HashMap)
+            log = (HashMap<Level, ArrayList<String>>) bundle.getSerializable("logger");
+    }
+
+    public static Logger getLogger() {
+        return INSTANCE;
+    }
+
+    public static void log(Object clazz, String log) {
+        getLogger().log(clazz.getClass().getSimpleName(), Level.INFO, log);
+    }
+
+    public static void log(String log) {
+        getLogger().log("UNKNOWN", Level.INFO, log);
     }
 
     public void log(String TAG, Level level, String message) {
@@ -59,13 +61,8 @@ public class Logger implements Parcelable {
             log.get(Level.INFO).add("[" + TAG + "] " + "[" + System.currentTimeMillis() + "] " + message);
         }
         log.get(Level.DEBUG).add("[" + TAG + "] " + message);
-        for (OnLogUpdate update : onLogUpdates)
-            try {
-                update.onLogUpdate(level, TAG, message);
-            } catch (Exception e) {
-                logAboutCrash(TAG, e);
-                Log.e(TAG, "Ошибка в отправке события обновления лога", e);
-            }
+        Log.d(TAG, message);
+
     }
 
     public void log(String TAG, Level level, int resId) {
@@ -81,30 +78,6 @@ public class Logger implements Parcelable {
         return log.get(level);
     }
 
-    public void subscribeOnUpdate(OnLogUpdate onLogUpdate) {
-        if (!onLogUpdates.contains(onLogUpdate))
-            onLogUpdates.add(onLogUpdate);
-    }
-
-    protected Logger(Parcel in) {
-        Bundle bundle = in.readBundle(getClass().getClassLoader());
-        if (bundle.getSerializable("logger") != null && bundle.getSerializable("logger") instanceof HashMap)
-            log = (HashMap<Level, ArrayList<String>>) bundle.getSerializable("logger");
-    }
-
-    public static final Creator<Logger> CREATOR = new Creator<Logger>() {
-        @Override
-        public Logger createFromParcel(Parcel in) {
-
-            return new Logger(in);
-        }
-
-        @Override
-        public Logger[] newArray(int size) {
-            return new Logger[size];
-        }
-    };
-
     @Override
     public int describeContents() {
         return 0;
@@ -119,6 +92,12 @@ public class Logger implements Parcelable {
 
     public Context getContext() {
         return App.get().getBaseContext();
+    }
+
+    public enum Level {
+        DEBUG,
+        INFO,
+        ERROR
     }
 
 }

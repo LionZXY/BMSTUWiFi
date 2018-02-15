@@ -2,6 +2,9 @@
     <string name="app_name">Авторизация для Wi-Fi BMSTU</string>
     <string name="notfication_title">Подключение к WiFi</string>
 
+    <string name="not">не</string>
+    <string name="error" formatted="false">Ошибка: %s</string>
+
     <string name="toast_lwrite_permission_deny">Ну и чего ты наделал? :( Теперь я не смогу писать логи :( Хотя может это и к лучшему…</string>
 
     <string name="debug_name">Логи программы</string>
@@ -82,6 +85,26 @@
     <string name="about_me_email_send">Отправка письма…</string>
     <string name="about_me_email_err">У вас нет приложений для отправки письма</string>
 
+    <string name="stop">Stop</string>
 
     <string name="by">Никита Куликов (ИУ4–23)</string>
+
+    <!-- Текст для нотификаций -->
+    <string name="notification_success">Успешно подключено</string>
+    <string name="notification_success_log">Нажмите, чтобы узнать подробности</string>
+    <string name="notification_register">Авторизация в сети</string>
+    <string name="notification_register_check">Проверка наличия логина и пароля</string>
+    <string name="notification_connection_check">Проверка соединения</string>
+    <string name="notification_not_registered">Устройство не зарегистрировано</string>
+    <string name="notification_not_registered_register">Нажмите, чтобы перейти к регистрации</string>
+    <string name="notification_error">Не удалось подключиться</string>
+    <string name="notification_error_log">Нажмите, чтобы узнать подробности или попробовать снова</string>
+    <string name="notification_unsupported">Сеть не поддерживается</string>
+    <string name="notification_progress_waiting">Ожидание…</string>
+    <string name="notification_try_out_of" formatted="false">попытка %d из %d</string>
+    <string name="notification_ip_waiting">Ожидание IP адреса…</string>
+    <string name="notification_ip_wait_result" formatted="false">IP адрес%s получен в течение %d секунд</string>
+
+    <string name="notification_auth_connecting" formatted="false">Подключение к сети %s</string>
+    <string name="notification_algorithm_name" formatted="false">Название алгоритма: %s</string>
 </resources>

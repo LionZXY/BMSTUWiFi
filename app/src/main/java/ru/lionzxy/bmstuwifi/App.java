@@ -7,11 +7,6 @@ import android.support.multidex.MultiDexApplication;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.securepreferences.SecurePreferences;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ru.lionzxy.bmstuwifi.interfaces.OnAppTerminate;
-
 /**
  * Created by lionzxy on 13.11.16.
  */
@@ -21,10 +16,13 @@ public class App extends MultiDexApplication {
     protected static App instance;
     private SecurePreferences mSecurePrefs;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private List<OnAppTerminate> subscribeList = new ArrayList<>();
 
     public App() {
         instance = this;
+    }
+
+    public static App get() {
+        return instance;
     }
 
     @Override
@@ -34,31 +32,11 @@ public class App extends MultiDexApplication {
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, new Bundle());
     }
 
-    public static App get() {
-        return instance;
-    }
-
     public SharedPreferences getSharedPreferences() {
         if (mSecurePrefs == null) {
             mSecurePrefs = new SecurePreferences(this);
         }
-        if (mSecurePrefs.getString("auth_pass", null) != null || mSecurePrefs.getString("auth_user", null) != null) {
-            mSecurePrefs.edit().putString("lb_login", mSecurePrefs.getString("auth_pass", null))
-                    .putString("lb_password", mSecurePrefs.getString("auth_user", null)).remove("auth_pass").remove("auth_user").apply();
-        }
-
 
         return mSecurePrefs;
-    }
-
-    public void subcribeOnTerminate(OnAppTerminate listener) {
-        subscribeList.add(listener);
-    }
-
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        for (OnAppTerminate terminate : subscribeList)
-            terminate.onTerminate();
     }
 }
