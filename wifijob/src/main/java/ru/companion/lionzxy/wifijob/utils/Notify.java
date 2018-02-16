@@ -9,15 +9,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+
+import net.grandcentrix.tray.AppPreferences;
 
 public class Notify extends NotificationCompat.Builder {
     private Context context;
     private NotificationManager nm;
-    private SharedPreferences settings;
+    private AppPreferences settings;
 
     private int id = 0;
     private boolean enabled = true;
@@ -28,7 +28,7 @@ public class Notify extends NotificationCompat.Builder {
         super(context);
         this.context = context;
         this.nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        this.settings = PreferenceManager.getDefaultSharedPreferences(context);
+        this.settings = new AppPreferences(context);
 
         priority(Util.getIntPreference(context, "pref_notify_priority", 0));
     }

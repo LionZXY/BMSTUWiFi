@@ -8,10 +8,10 @@ package ru.companion.lionzxy.wifijob.services;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiManager;
-import android.preference.PreferenceManager;
+
+import net.grandcentrix.tray.AppPreferences;
 
 import java.util.Locale;
 
@@ -45,7 +45,7 @@ public class NetworkReceiver extends BroadcastReceiver {
             return;
 
         // Stop if automatic connection is disabled in settings
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        AppPreferences settings = new AppPreferences(context);
         if (!settings.getBoolean("pref_autoconnect", true))
             return;
 

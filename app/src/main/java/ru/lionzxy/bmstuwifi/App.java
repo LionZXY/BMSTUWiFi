@@ -27,10 +27,6 @@ public class App extends MultiDexApplication {
         instance = this;
     }
 
-    public static App get() {
-        return instance;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();

@@ -6,7 +6,6 @@ package ru.companion.lionzxy.wifijob.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
@@ -14,20 +13,21 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 
+import net.grandcentrix.tray.AppPreferences;
+
 public class WifiUtils {
     public static final String UNKNOWN_SSID = "<unknown ssid>";
 
-    private final SharedPreferences settings;
+    private final AppPreferences settings;
     private final ConnectivityManager cm;
     private final WifiManager wm;
 
     public WifiUtils(@NonNull Context context) {
-        this.settings = PreferenceManager.getDefaultSharedPreferences(context);
+        this.settings = new AppPreferences(context);
         this.cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         this.wm = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
     }

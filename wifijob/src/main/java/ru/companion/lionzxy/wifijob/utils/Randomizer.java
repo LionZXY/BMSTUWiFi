@@ -6,9 +6,9 @@ package ru.companion.lionzxy.wifijob.utils;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
+
+import net.grandcentrix.tray.AppPreferences;
 
 import java.security.SecureRandom;
 
@@ -194,12 +194,10 @@ public class Randomizer {
     }
 
     public String cached_useragent() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        AppPreferences settings = new AppPreferences(context);
 
         if ("unset".equals(settings.getString("pref_user_agent", "unset")))
-            settings.edit()
-                    .putString("pref_user_agent", useragent())
-                    .apply();
+            settings.put("pref_user_agent", useragent());
 
         return settings.getString("pref_user_agent", useragent());
     }

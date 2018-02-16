@@ -1,17 +1,17 @@
 /**
  * Wi-Fi в метро (pw.thedrhax.mosmetro, Moscow Wi-Fi autologin)
  * Copyright © 2015 Dmitry Karikh <the.dr.hax@gmail.com>
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,15 +39,16 @@ import java.util.Map;
 import ru.companion.lionzxy.wifijob.R;
 
 public class Logger {
-    public enum LEVEL {INFO, DEBUG}
-
-    private static final Map<LEVEL,StringBuilder> logs = new HashMap<LEVEL,StringBuilder>() {{
+    private static final Map<LEVEL, StringBuilder> logs = new HashMap<LEVEL, StringBuilder>() {{
         for (LEVEL level : LEVEL.values()) {
             put(level, new StringBuilder());
         }
     }};
-
     private static long last_timestamp = 0;
+    /**
+     * Map of registered Callback objects
+     */
+    private static Map<Object, Callback> callbacks = new HashMap<>();
 
     private static String timestamp() {
         long diff = System.currentTimeMillis() - last_timestamp;
@@ -59,7 +60,7 @@ public class Logger {
      * Inputs
      */
 
-    public static void log (LEVEL level, String message) {
+    public static void log(LEVEL level, String message) {
         if (level == LEVEL.DEBUG) {
             message = timestamp() + " " + message;
         }
@@ -71,17 +72,17 @@ public class Logger {
         }
     }
 
-    public static void log (LEVEL level, Throwable ex) {
+    public static void log(LEVEL level, Throwable ex) {
         log(level, Log.getStackTraceString(ex));
     }
 
-    public static void log (String message) {
+    public static void log(String message) {
         for (LEVEL level : LEVEL.values()) {
             log(level, message);
         }
     }
 
-    public static void log (Object obj, String message) {
+    public static void log(Object obj, String message) {
         log(LEVEL.DEBUG, String.format(Locale.ENGLISH, "%s (%d) | %s",
                 obj.getClass().getSimpleName(),
                 System.identityHashCode(obj),
@@ -122,7 +123,8 @@ public class Logger {
 
         FileWriter writer = new FileWriter(log_file);
         writer.write(read(Logger.LEVEL.DEBUG));
-        writer.flush(); writer.close();
+        writer.flush();
+        writer.close();
 
         return FileProvider.getUriForFile(context, "pw.thedrhax.mosmetro.provider", log_file);
     }
@@ -130,7 +132,7 @@ public class Logger {
     public static void share(Context context) {
         Intent share = new Intent(Intent.ACTION_SEND).setType("text/plain")
                 .putExtra(Intent.EXTRA_EMAIL,
-                        new String[] {context.getString(R.string.report_email_address)}
+                        new String[]{context.getString(R.string.report_email_address)}
                 )
                 .putExtra(Intent.EXTRA_SUBJECT,
                         context.getString(R.string.report_email_subject)
@@ -148,6 +150,34 @@ public class Logger {
                 share, context.getString(R.string.report_choose_client)
         ));
     }
+
+    /**
+     * Register the Callback object in the Logger
+     * @param key Any object used to identify the Callback
+     * @param callback Callback object to be registered
+     */
+    public static void registerCallback(Object key, Callback callback) {
+        callbacks.put(key, callback);
+    }
+
+    /**
+     * Unregister the Callback object
+     * @param key Any object used to identify the Callback
+     */
+    public static void unregisterCallback(Object key) {
+        callbacks.remove(key);
+    }
+
+    /**
+     * Get the registered Callback by it's key object
+     * @param key Any object used to identify the Callback
+     * @return Callback object identified by this key
+     */
+    public static Callback getCallback(Object key) {
+        return callbacks.get(key);
+    }
+
+    public enum LEVEL {INFO, DEBUG}
 
     /**
      * Callback interface
@@ -199,36 +229,5 @@ public class Logger {
          * @param message Text of the message being forwarded
          */
         public abstract void log(LEVEL level, String message);
-    }
-
-    /**
-     * Map of registered Callback objects
-     */
-    private static Map<Object,Callback> callbacks = new HashMap<>();
-
-    /**
-     * Register the Callback object in the Logger
-     * @param key Any object used to identify the Callback
-     * @param callback Callback object to be registered
-     */
-    public static void registerCallback(Object key, Callback callback) {
-        callbacks.put(key, callback);
-    }
-
-    /**
-     * Unregister the Callback object
-     * @param key Any object used to identify the Callback
-     */
-    public static void unregisterCallback(Object key) {
-        callbacks.remove(key);
-    }
-
-    /**
-     * Get the registered Callback by it's key object
-     * @param key Any object used to identify the Callback
-     * @return Callback object identified by this key
-     */
-    public static Callback getCallback(Object key) {
-        return callbacks.get(key);
     }
 }

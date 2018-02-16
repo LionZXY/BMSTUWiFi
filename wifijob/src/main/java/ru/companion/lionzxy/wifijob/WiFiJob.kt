@@ -1,4 +1,5 @@
 @file:JvmName("WiFiJob")
+
 package ru.companion.lionzxy.wifijob
 
 import ru.companion.lionzxy.wifijob.authentificator.Provider

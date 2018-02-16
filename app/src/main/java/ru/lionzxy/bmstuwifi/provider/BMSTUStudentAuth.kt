@@ -1,7 +1,7 @@
 package ru.lionzxy.bmstuwifi.provider
 
 import android.content.Context
-import com.securepreferences.SecurePreferences
+import net.grandcentrix.tray.AppPreferences
 import okhttp3.FormBody
 import okhttp3.Request
 import ru.companion.lionzxy.wifijob.R
@@ -18,8 +18,8 @@ class BMSTUStudentAuth(context: Context) : Provider(context) {
 
     }
 
-    private val sharedPreferences: SecurePreferences by lazy {
-        SecurePreferences(context)
+    private val sharedPreferences: AppPreferences by lazy {
+        AppPreferences(context)
     }
 
     init {
@@ -87,33 +87,33 @@ class BMSTUStudentAuth(context: Context) : Provider(context) {
 
     fun getLogin(defaultV: String): String {
 
-        return sharedPreferences.getString(getNameid() + "_login", defaultV)
+        return sharedPreferences.getString(getNameid() + "_login", defaultV) ?: defaultV
     }
 
     fun getPassword(defaultV: String): String {
-        return sharedPreferences.getString(getNameid() + "_password", defaultV)
+        return sharedPreferences.getString(getNameid() + "_password", defaultV) ?: defaultV
     }
 
     fun getLogoutId(defaultV: String): String {
-        return sharedPreferences.getString(getNameid() + "_logout", defaultV)
+        return sharedPreferences.getString(getNameid() + "_logout", defaultV) ?: defaultV
     }
 
     fun setLogin(login: String): Provider {
-        sharedPreferences.edit().putString(getNameid() + "_login", login).apply()
+        sharedPreferences.put(getNameid() + "_login", login)
         return this
     }
 
     fun setPassword(password: String): Provider {
-        sharedPreferences.edit().putString(getNameid() + "_password", password).apply()
+        sharedPreferences.put(getNameid() + "_password", password)
         return this
     }
 
     fun setLogoutId(logoutId: String): Provider {
-        sharedPreferences.edit().putString(getNameid() + "_logout", logoutId).apply()
+        sharedPreferences.put(getNameid() + "_logout", logoutId)
         return this
     }
 
-    fun getNameid(): String {
+    private fun getNameid(): String {
         return name
     }
 }

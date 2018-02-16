@@ -8,10 +8,9 @@ package ru.companion.lionzxy.wifijob.services
 import android.app.IntentService
 import android.app.PendingIntent
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.SystemClock
-import android.preference.PreferenceManager
+import net.grandcentrix.tray.AppPreferences
 import ru.companion.lionzxy.wifijob.R
 import ru.companion.lionzxy.wifijob.authentificator.Provider
 import ru.companion.lionzxy.wifijob.utils.*
@@ -25,7 +24,7 @@ class ConnectionService : IntentService("ConnectionService") {
 
     // Preferences
     private lateinit var wifi: WifiUtils
-    private lateinit var settings: SharedPreferences
+    private lateinit var settings: AppPreferences
     private var pref_retry_count: Int = 0
     private var pref_ip_wait: Int = 0
     private var pref_notify_foreground: Boolean = false
@@ -44,7 +43,7 @@ class ConnectionService : IntentService("ConnectionService") {
                 return from_shortcut || super.isConnected(SSID)
             }
         }
-        settings = PreferenceManager.getDefaultSharedPreferences(this)
+        settings = AppPreferences(this)
         pref_retry_count = Util.getIntPreference(this, "pref_retry_count", 3)
         pref_ip_wait = Util.getIntPreference(this, "pref_ip_wait", 0)
         pref_notify_foreground = settings.getBoolean("pref_notify_foreground", true)

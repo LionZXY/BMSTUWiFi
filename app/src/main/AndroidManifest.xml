@@ -17,18 +17,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity_">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <service android:name="ru.companion.lionzxy.wifijob.services.ConnectionService" />
+        <service
+            android:process=":remote"
+            android:name="ru.companion.lionzxy.wifijob.services.ConnectionService" />
 
         <receiver
             android:name="ru.companion.lionzxy.wifijob.services.NetworkReceiver"
             android:enabled="true"
+            android:process=":remote"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.net.wifi.STATE_CHANGE" />

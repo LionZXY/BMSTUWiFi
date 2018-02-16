@@ -6,8 +6,7 @@
 package ru.companion.lionzxy.wifijob.authentificator
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import net.grandcentrix.tray.AppPreferences
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.Request
@@ -31,7 +30,7 @@ import kotlin.collections.HashMap
  */
 
 abstract class Provider(protected var context: Context) : LinkedList<Task>() {
-    protected var settings: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    protected var settings: AppPreferences = AppPreferences(context)
     protected var random: Randomizer = Randomizer(context)
     protected val client: OkHttpClient
 
