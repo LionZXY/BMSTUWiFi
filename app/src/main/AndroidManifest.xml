@@ -26,10 +26,10 @@
 
         <service
             android:process=":remote"
-            android:name="ru.companion.lionzxy.wifijob.services.ConnectionService" />
+            android:name="ru.lionzxy.wifijob.services.ConnectionService" />
 
         <receiver
-            android:name="ru.companion.lionzxy.wifijob.services.NetworkReceiver"
+            android:name="ru.lionzxy.wifijob.services.NetworkReceiver"
             android:enabled="true"
             android:process=":remote"
             android:exported="true">

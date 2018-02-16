@@ -3,7 +3,7 @@
  * Copyright © 2015 Dmitry Karikh <the.dr.hax@gmail.com>
  */
 
-package ru.companion.lionzxy.wifijob.authentificator
+package ru.lionzxy.wifijob.authentificator
 
 import android.content.Context
 import net.grandcentrix.tray.AppPreferences
@@ -11,11 +11,11 @@ import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
-import ru.companion.lionzxy.wifijob.authentificator.provides.UnknownProvider
-import ru.companion.lionzxy.wifijob.utils.Listener
-import ru.companion.lionzxy.wifijob.utils.Logger
-import ru.companion.lionzxy.wifijob.utils.Randomizer
-import ru.companion.lionzxy.wifijob.utils.Util
+import ru.lionzxy.wifijob.authentificator.provides.UnknownProvider
+import ru.lionzxy.wifijob.utils.Listener
+import ru.lionzxy.wifijob.utils.Logger
+import ru.lionzxy.wifijob.utils.Randomizer
+import ru.lionzxy.wifijob.utils.Util
 import java.io.IOException
 import java.util.*
 import kotlin.collections.HashMap

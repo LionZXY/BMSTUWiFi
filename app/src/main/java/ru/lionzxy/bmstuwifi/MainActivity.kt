@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity
  * Activity with WIFI SSID supported list.
  *
  *
- * @author Nikita Kulikov <nikita></nikita>@kulikof.ru>
+ * @author Nikita Kulikov <nikita@kulikof.ru>
  * @project BMSTUWiFi
  * @date 27.11.16
  */

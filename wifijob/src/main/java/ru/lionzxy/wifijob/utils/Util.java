@@ -1,4 +1,4 @@
-package ru.companion.lionzxy.wifijob.utils;
+package ru.lionzxy.wifijob.utils;
 
 import android.content.Context;
 

@@ -6,7 +6,7 @@ import android.support.multidex.MultiDexApplication;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.securepreferences.SecurePreferences;
 
-import ru.companion.lionzxy.wifijob.WiFiJob;
+import ru.lionzxy.wifijob.WiFiJob;
 import ru.lionzxy.bmstuwifi.provider.BMSTUStudentAuth;
 
 /**

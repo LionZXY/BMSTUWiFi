@@ -3,6 +3,6 @@
  * Copyright © 2015 Dmitry Karikh <the.dr.hax@gmail.com>
  */
 
-package ru.companion.lionzxy.wifijob.authentificator
+package ru.lionzxy.wifijob.authentificator
 
 abstract class NamedTask(val name: String) : Task

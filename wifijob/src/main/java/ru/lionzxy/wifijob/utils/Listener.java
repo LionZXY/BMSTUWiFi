@@ -2,7 +2,7 @@
  * This class had been forked and it was changed for own tasks from repository "Wi-Fi в метро" (pw.thedrhax.mosmetro, Moscow Wi-Fi autologin)
  * Copyright © 2015 Dmitry Karikh <the.dr.hax@gmail.com>
  */
-package ru.companion.lionzxy.wifijob.utils;
+package ru.lionzxy.wifijob.utils;
 
 import java.util.LinkedList;
 import java.util.List;

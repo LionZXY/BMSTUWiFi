@@ -3,7 +3,7 @@
  * Copyright © 2015 Dmitry Karikh <the.dr.hax@gmail.com>
  */
 
-package ru.companion.lionzxy.wifijob.services;
+package ru.lionzxy.wifijob.services;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,8 +15,8 @@ import net.grandcentrix.tray.AppPreferences;
 
 import java.util.Locale;
 
-import ru.companion.lionzxy.wifijob.utils.Logger;
-import ru.companion.lionzxy.wifijob.utils.WifiUtils;
+import ru.lionzxy.wifijob.utils.Logger;
+import ru.lionzxy.wifijob.utils.WifiUtils;
 
 /**
  * This BroadcastReceiver filters and sends Intents to the ConnectionService.

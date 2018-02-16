@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ru.companion.lionzxy.wifijob.utils;
+package ru.lionzxy.wifijob.utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import ru.companion.lionzxy.wifijob.R;
+import ru.lionzxy.wifijob.R;
 
 public class Logger {
     private static final Map<LEVEL, StringBuilder> logs = new HashMap<LEVEL, StringBuilder>() {{

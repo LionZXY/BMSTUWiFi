@@ -3,7 +3,7 @@
  * Copyright © 2015 Dmitry Karikh <the.dr.hax@gmail.com>
  */
 
-package ru.companion.lionzxy.wifijob.services
+package ru.lionzxy.wifijob.services
 
 import android.app.IntentService
 import android.app.PendingIntent
@@ -11,9 +11,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.SystemClock
 import net.grandcentrix.tray.AppPreferences
-import ru.companion.lionzxy.wifijob.R
-import ru.companion.lionzxy.wifijob.authentificator.Provider
-import ru.companion.lionzxy.wifijob.utils.*
+import ru.lionzxy.wifijob.R
+import ru.lionzxy.wifijob.authentificator.Provider
+import ru.lionzxy.wifijob.utils.*
 import java.util.concurrent.locks.ReentrantLock
 
 
@@ -233,7 +233,7 @@ class ConnectionService : IntentService("ConnectionService") {
     public override fun onHandleIntent(intent: Intent?) {
         if (lock.tryLock()) {
             Logger.log(this, "Broadcast | ConnectionService (RUNNING = true)")
-            sendBroadcast(Intent("ru.companion.lionzxy.wifijob.event.ConnectionService")
+            sendBroadcast(Intent("ru.lionzxy.wifijob.event.ConnectionService")
                     .putExtra("RUNNING", true)
             )
 
@@ -257,7 +257,7 @@ class ConnectionService : IntentService("ConnectionService") {
             }
 
             Logger.log(this, "Broadcast | ConnectionService (RUNNING = false)")
-            sendBroadcast(Intent("ru.companion.lionzxy.wifijob.event.ConnectionService")
+            sendBroadcast(Intent("ru.lionzxy.wifijob.event.ConnectionService")
                     .putExtra("RUNNING", false)
             )
         } else {
@@ -326,7 +326,7 @@ class ConnectionService : IntentService("ConnectionService") {
         }
 
         Logger.log(this, "Broadcast | CONNECTED")
-        sendBroadcast(Intent("ru.companion.lionzxy.wifijob.event.CONNECTED")
+        sendBroadcast(Intent("ru.lionzxy.wifijob.event.CONNECTED")
                 .putExtra("SSID", SSID)
                 .putExtra("PROVIDER", provider.name)
         )
@@ -347,7 +347,7 @@ class ConnectionService : IntentService("ConnectionService") {
         }
 
         Logger.log(this, "Broadcast | DISCONNECTED")
-        sendBroadcast(Intent("ru.companion.lionzxy.wifijob.event.DISCONNECTED"))
+        sendBroadcast(Intent("ru.lionzxy.wifijob.event.DISCONNECTED"))
         notify.hide()
 
         // Try to reconnect the Wi-Fi network

@@ -4,10 +4,10 @@ import android.content.Context
 import net.grandcentrix.tray.AppPreferences
 import okhttp3.FormBody
 import okhttp3.Request
-import ru.companion.lionzxy.wifijob.R
-import ru.companion.lionzxy.wifijob.authentificator.NamedTask
-import ru.companion.lionzxy.wifijob.authentificator.Provider
-import ru.companion.lionzxy.wifijob.utils.Listener
+import ru.lionzxy.wifijob.R
+import ru.lionzxy.wifijob.authentificator.NamedTask
+import ru.lionzxy.wifijob.authentificator.Provider
+import ru.lionzxy.wifijob.utils.Listener
 import java.util.*
 import java.util.regex.Pattern
 
