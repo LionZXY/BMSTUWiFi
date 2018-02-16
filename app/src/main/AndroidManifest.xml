@@ -24,23 +24,10 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".AppPreferenceActivity"
-            android:description="@string/debug_name"
-            android:theme="@style/AppTheme.ActionBar" />
-
-        <activity android:name=".LoginActivity_" />
-
-        <activity
-            android:name=".DebugActivity_"
-            android:description="@string/debug_name"
-            android:theme="@style/AppTheme.LogActivity" />
-
-
-        <service android:name=".services.ConnectionService" />
+        <service android:name="ru.companion.lionzxy.wifijob.services.ConnectionService" />
 
         <receiver
-            android:name=".services.NetworkReceiver"
+            android:name="ru.companion.lionzxy.wifijob.services.NetworkReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

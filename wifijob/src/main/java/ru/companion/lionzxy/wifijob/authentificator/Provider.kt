@@ -17,7 +17,6 @@ import ru.companion.lionzxy.wifijob.utils.Listener
 import ru.companion.lionzxy.wifijob.utils.Logger
 import ru.companion.lionzxy.wifijob.utils.Randomizer
 import ru.companion.lionzxy.wifijob.utils.Util
-import timber.log.Timber
 import java.io.IOException
 import java.util.*
 import kotlin.collections.HashMap
@@ -61,7 +60,7 @@ abstract class Provider(protected var context: Context) : LinkedList<Task>() {
      * Listener used to stop Provider immediately after
      * variable is changed by another thread
      */
-    private val running = Listener(true)
+    val running = Listener(true)
 
     /**
      * Method used to check if Provider must finish as soon as possible.

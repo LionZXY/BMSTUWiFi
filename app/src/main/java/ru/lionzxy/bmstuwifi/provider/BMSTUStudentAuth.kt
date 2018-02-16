@@ -1,18 +1,21 @@
-package ru.companion.lionzxy.wifijob.authentificator.provides
+package ru.lionzxy.bmstuwifi.provider
 
 import android.content.Context
 import com.securepreferences.SecurePreferences
 import okhttp3.FormBody
 import okhttp3.Request
-import org.jsoup.Jsoup
 import ru.companion.lionzxy.wifijob.R
 import ru.companion.lionzxy.wifijob.authentificator.NamedTask
 import ru.companion.lionzxy.wifijob.authentificator.Provider
+import ru.companion.lionzxy.wifijob.utils.Listener
 import java.util.*
+import java.util.regex.Pattern
 
 class BMSTUStudentAuth(context: Context) : Provider(context) {
     companion object {
         const val STUDENT_AUTH_SITE = "https://lbpfs.bmstu.ru:8003/index.php?zone=bmstu_lb"
+        val REG_EXPLOGOUT = Pattern.compile("\'<input name=\"logout_id\" type=\"hidden\" value=([\"][\\w]+\")")
+
     }
 
     private val sharedPreferences: SecurePreferences by lazy {
@@ -20,6 +23,14 @@ class BMSTUStudentAuth(context: Context) : Provider(context) {
     }
 
     init {
+        running.subscribe(object : Listener<Boolean>(true) {
+            override fun onChange(new_value: Boolean) {
+                if (!new_value) {
+                    setLogoutId("")
+                }
+            }
+        })
+
         add(object : NamedTask(context.getString(R.string.notification_connection_check)) {
             override fun run(vars: HashMap<String, Any>): Boolean {
                 if (isConnected) {
@@ -60,11 +71,11 @@ class BMSTUStudentAuth(context: Context) : Provider(context) {
                 val response = client.newCall(request).execute()
 
                 val html = response.body()!!.string()
-                val doc = Jsoup.parse(html)
-                val logout_id = doc.select("input[name=logout_id]").firstOrNull()?.attr("value")
+                val regexResult = REG_EXPLOGOUT.matcher(html)
 
-                if (response.isSuccessful && !logout_id.isNullOrEmpty()) {
-                    setLogoutId(logout_id!!)
+                if (regexResult.find() && response.isSuccessful) {
+                    val logoutId = regexResult.group(1)
+                    setLogoutId(logoutId.substring(1, logoutId.length - 2))
                     vars["result"] = RESULT.CONNECTED
                 } else {
                     vars["result"] = RESULT.NOT_REGISTERED
@@ -73,7 +84,6 @@ class BMSTUStudentAuth(context: Context) : Provider(context) {
             }
         })
     }
-
 
     fun getLogin(defaultV: String): String {
 
