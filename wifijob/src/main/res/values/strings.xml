@@ -1,0 +1,32 @@
+<resources>
+    <!-- Service information -->
+    <string name="report_email_address">EMAIL ADDRESS</string>
+    <string name="report_email_subject">EMAIL SUBJECT</string>
+    <string name="error_log_file">failed to save log to file</string>
+    <string name="report_choose_client">Choose email client or messenger…</string>
+
+    <string name="app_name">WiFiJob</string>
+
+    <string name="not">не</string>
+    <string name="stop">Stop</string>
+    <string name="error" formatted="false">Ошибка: %s</string>
+
+    <!-- Text for information -->
+    <string name="notification_success">Успешно подключено</string>
+    <string name="notification_success_log">Нажмите, чтобы узнать подробности</string>
+    <string name="notification_register">Авторизация в сети</string>
+    <string name="notification_register_check">Проверка наличия логина и пароля</string>
+    <string name="notification_connection_check">Проверка соединения</string>
+    <string name="notification_not_registered">Устройство не зарегистрировано</string>
+    <string name="notification_not_registered_register">Нажмите, чтобы перейти к регистрации</string>
+    <string name="notification_error">Не удалось подключиться</string>
+    <string name="notification_error_log">Нажмите, чтобы узнать подробности или попробовать снова</string>
+    <string name="notification_unsupported">Сеть не поддерживается</string>
+    <string name="notification_progress_waiting">Ожидание…</string>
+    <string name="notification_try_out_of" formatted="false">попытка %d из %d</string>
+    <string name="notification_ip_waiting">Ожидание IP адреса…</string>
+    <string name="notification_ip_wait_result" formatted="false">IP адрес%s получен в течение %d секунд</string>
+
+    <string name="notification_auth_connecting" formatted="false">Подключение к сети %s</string>
+    <string name="notification_algorithm_name" formatted="false">Название алгоритма: %s</string>
+</resources>

@@ -3,7 +3,7 @@
  * Copyright © 2015 Dmitry Karikh <the.dr.hax@gmail.com>
  */
 
-package ru.lionzxy.bmstuwifi.services
+package ru.companion.lionzxy.wifijob.services
 
 import android.app.IntentService
 import android.app.PendingIntent
@@ -12,14 +12,9 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.SystemClock
 import android.preference.PreferenceManager
-import ru.lionzxy.bmstuwifi.DebugActivity_
-import ru.lionzxy.bmstuwifi.R
-import ru.lionzxy.bmstuwifi.authentificator.Provider
-import ru.lionzxy.bmstuwifi.utils.Listener
-import ru.lionzxy.bmstuwifi.utils.Notify
-import ru.lionzxy.bmstuwifi.utils.Util
-import ru.lionzxy.bmstuwifi.utils.WifiUtils
-import ru.lionzxy.bmstuwifi.utils.logs.Logger
+import ru.companion.lionzxy.wifijob.R
+import ru.companion.lionzxy.wifijob.authentificator.Provider
+import ru.companion.lionzxy.wifijob.utils.*
 import java.util.concurrent.locks.ReentrantLock
 
 
@@ -73,11 +68,11 @@ class ConnectionService : IntentService("ConnectionService") {
             }
         }
 
-        notify.id(1)
-                .onClick(PendingIntent.getActivity(this, 1,
-                        Intent(this, DebugActivity_::class.java),
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                ))
+        notify.id(1) // TODO DebugActivity
+                //.onClick(PendingIntent.getActivity(this, 1,
+                //        Intent(this, DebugActivity_::class.java),
+                //        PendingIntent.FLAG_UPDATE_CURRENT
+                //))
                 .onDelete(stop_intent)
                 .locked(pref_notify_foreground)
     }
@@ -98,35 +93,36 @@ class ConnectionService : IntentService("ConnectionService") {
 
                 notify.title(getString(R.string.notification_success))
                         .text(getString(R.string.notification_success_log))
-                        .icon(R.drawable.ic_notification_logo,
-                                R.drawable.ic_notification_logo)
+                        .icon(R.drawable.wifijob_notification_logo,
+                                R.drawable.wifijob_notification_logo)
                         .show()
             }
 
             Provider.RESULT.NOT_REGISTERED -> notify.hide()
                     .title(getString(R.string.notification_not_registered))
                     .text(getString(R.string.notification_not_registered_register))
-                    .icon(R.drawable.ic_notification_logo,
-                            R.drawable.ic_notification_logo)
-                    .onClick(PendingIntent.getActivity(this, 0,
-                            Intent(this, DebugActivity_::class.java)
-                                    .putExtra("data", "http://wi-fi.ru"),
-                            PendingIntent.FLAG_UPDATE_CURRENT))
+                    .icon(R.drawable.wifijob_notification_logo,
+                            R.drawable.wifijob_notification_logo)
+                    // TODO DebugActivity
+                    //.onClick(PendingIntent.getActivity(this, 0,
+                    //        Intent(this, DebugActivity_::class.java)
+                    //                .putExtra("data", "http://wi-fi.ru"),
+                    //        PendingIntent.FLAG_UPDATE_CURRENT))
                     .id(2).locked(false).show()
 
             Provider.RESULT.ERROR -> notify.hide()
                     .title(getString(R.string.notification_error))
                     .text(getString(R.string.notification_error_log))
-                    .icon(R.drawable.ic_notification_logo,
-                            R.drawable.ic_notification_logo)
+                    .icon(R.drawable.wifijob_notification_logo,
+                            R.drawable.wifijob_notification_logo)
                     .enabled(!isFromDebug && settings.getBoolean("pref_notify_fail", false))
                     .id(2).locked(false).show()
 
             Provider.RESULT.NOT_SUPPORTED -> notify.hide()
                     .title(getString(R.string.notification_unsupported))
                     .text(getString(R.string.notification_error_log))
-                    .icon(R.drawable.ic_notification_logo,
-                            R.drawable.ic_notification_logo)
+                    .icon(R.drawable.wifijob_notification_logo,
+                            R.drawable.wifijob_notification_logo)
                     .enabled(!isFromDebug && settings.getBoolean("pref_notify_fail", false))
                     .id(2).locked(false).show()
         }
@@ -238,7 +234,7 @@ class ConnectionService : IntentService("ConnectionService") {
     public override fun onHandleIntent(intent: Intent?) {
         if (lock.tryLock()) {
             Logger.log(this, "Broadcast | ConnectionService (RUNNING = true)")
-            sendBroadcast(Intent("ru.lionzxy.bmstuwifi.event.ConnectionService")
+            sendBroadcast(Intent("ru.companion.lionzxy.wifijob.event.ConnectionService")
                     .putExtra("RUNNING", true)
             )
 
@@ -262,7 +258,7 @@ class ConnectionService : IntentService("ConnectionService") {
             }
 
             Logger.log(this, "Broadcast | ConnectionService (RUNNING = false)")
-            sendBroadcast(Intent("ru.lionzxy.bmstuwifi.event.ConnectionService")
+            sendBroadcast(Intent("ru.companion.lionzxy.wifijob.event.ConnectionService")
                     .putExtra("RUNNING", false)
             )
         } else {
@@ -271,8 +267,8 @@ class ConnectionService : IntentService("ConnectionService") {
     }
 
     private fun main() {
-        notify.icon(R.drawable.ic_notification_logo,
-                R.drawable.ic_notification_logo)
+        notify.icon(R.drawable.wifijob_notification_logo,
+                R.drawable.wifijob_notification_logo)
 
         // Wait for IP before detecting the Provider
         if (!waitForIP()) {
@@ -331,7 +327,7 @@ class ConnectionService : IntentService("ConnectionService") {
         }
 
         Logger.log(this, "Broadcast | CONNECTED")
-        sendBroadcast(Intent("ru.lionzxy.bmstuwifi.event.CONNECTED")
+        sendBroadcast(Intent("ru.companion.lionzxy.wifijob.event.CONNECTED")
                 .putExtra("SSID", SSID)
                 .putExtra("PROVIDER", provider.name)
         )
@@ -352,7 +348,7 @@ class ConnectionService : IntentService("ConnectionService") {
         }
 
         Logger.log(this, "Broadcast | DISCONNECTED")
-        sendBroadcast(Intent("ru.lionzxy.bmstuwifi.event.DISCONNECTED"))
+        sendBroadcast(Intent("ru.companion.lionzxy.wifijob.event.DISCONNECTED"))
         notify.hide()
 
         // Try to reconnect the Wi-Fi network

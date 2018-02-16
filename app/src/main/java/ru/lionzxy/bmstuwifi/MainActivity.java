@@ -14,6 +14,9 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import ru.companion.lionzxy.wifijob.WiFiJob;
+import ru.companion.lionzxy.wifijob.WifiJob;
+import ru.companion.lionzxy.wifijob.WifiJobKt;
 import ru.lionzxy.bmstuwifi.utils.Constant;
 import ru.lionzxy.bmstuwifi.utils.Notify;
 import ru.lionzxy.bmstuwifi.utils.logs.Logger;
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterViews
     public void afterViews() {
+
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {

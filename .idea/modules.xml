@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BMSTUWiFi.iml" filepath="$PROJECT_DIR$/BMSTUWiFi.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wifijob/wifijob.iml" filepath="$PROJECT_DIR$/wifijob/wifijob.iml" />
     </modules>
   </component>
 </project>

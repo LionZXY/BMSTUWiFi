@@ -3,7 +3,7 @@
  * Copyright © 2015 Dmitry Karikh <the.dr.hax@gmail.com>
  */
 
-package ru.lionzxy.bmstuwifi.authentificator
+package ru.companion.lionzxy.wifijob.authentificator
 
 import java.util.*
 

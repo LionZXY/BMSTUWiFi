@@ -1,4 +1,4 @@
-package ru.lionzxy.bmstuwifi.utils;
+package ru.companion.lionzxy.wifijob.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

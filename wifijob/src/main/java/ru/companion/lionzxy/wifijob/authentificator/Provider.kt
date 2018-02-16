@@ -3,7 +3,7 @@
  * Copyright © 2015 Dmitry Karikh <the.dr.hax@gmail.com>
  */
 
-package ru.lionzxy.bmstuwifi.authentificator
+package ru.companion.lionzxy.wifijob.authentificator
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -12,14 +12,15 @@ import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
-import ru.lionzxy.bmstuwifi.App
-import ru.lionzxy.bmstuwifi.authentificator.provides.BMSTUStudentAuth
-import ru.lionzxy.bmstuwifi.utils.Listener
-import ru.lionzxy.bmstuwifi.utils.Randomizer
-import ru.lionzxy.bmstuwifi.utils.Util
-import ru.lionzxy.bmstuwifi.utils.logs.Logger
+import ru.companion.lionzxy.wifijob.authentificator.provides.UnknownProvider
+import ru.companion.lionzxy.wifijob.utils.Listener
+import ru.companion.lionzxy.wifijob.utils.Logger
+import ru.companion.lionzxy.wifijob.utils.Randomizer
+import ru.companion.lionzxy.wifijob.utils.Util
+import timber.log.Timber
 import java.io.IOException
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * Base class for all providers.
@@ -154,38 +155,6 @@ abstract class Provider(protected var context: Context) : LinkedList<Task>() {
         return this
     }
 
-    fun getLogin(defaultV: String): String {
-
-        return App.get().sharedPreferences.getString(getNameid() + "_login", defaultV)
-    }
-
-    fun getPassword(defaultV: String): String {
-        return App.get().sharedPreferences.getString(getNameid() + "_password", defaultV)
-    }
-
-    fun getLogoutId(defaultV: String): String {
-        return App.get().sharedPreferences.getString(getNameid() + "_logout", defaultV)
-    }
-
-    fun setLogin(login: String): Provider {
-        App.get().sharedPreferences.edit().putString(getNameid() + "_login", login).apply()
-        return this
-    }
-
-    fun setPassword(password: String): Provider {
-        App.get().sharedPreferences.edit().putString(getNameid() + "_password", password).apply()
-        return this
-    }
-
-    fun setLogoutId(logoutId: String): Provider {
-        App.get().sharedPreferences.edit().putString(getNameid() + "_logout", logoutId).apply()
-        return this
-    }
-
-    fun getNameid(): String {
-        return name
-    }
-
     companion object {
         /**
          * URL used to detect if Captive Portal is present in the current network.
@@ -200,7 +169,7 @@ abstract class Provider(protected var context: Context) : LinkedList<Task>() {
         /**
          * List of supported SSIDs
          */
-        val SSIDs = arrayOf("bmstu_lb", "bmstu_staff", "bmstu_guest")
+        private val SSIDs = HashMap<String, Class<out Provider>>()
 
         /**
          * Find Provider using already received response from server.
@@ -211,10 +180,14 @@ abstract class Provider(protected var context: Context) : LinkedList<Task>() {
          * @see IAuth
          */
         fun find(context: Context, ssid: String): Provider {
-            return when (ssid) {
-                SSIDs[0] -> BMSTUStudentAuth(context)
-                else -> object : Provider(context) {}
-            }
+            val clazz = SSIDs[ssid] ?: return UnknownProvider(context)
+            val constructor = clazz.getConstructor(Context::class.java)
+            return constructor.newInstance(context)
+        }
+
+        fun addSSID(ssid: String, providerClazz: Class<out Provider>) {
+            val constructor = providerClazz.getConstructor(Context::class.java) // Throw if not found constructor
+            SSIDs[ssid] = providerClazz
         }
 
         /**
@@ -224,11 +197,7 @@ abstract class Provider(protected var context: Context) : LinkedList<Task>() {
          * @return True if network is supported; otherwise, false.
          */
         fun isSSIDSupported(SSID: String): Boolean {
-            for (a in SSIDs) {
-                if (a == SSID)
-                    return true
-            }
-            return false
+            return SSIDs.containsKey(SSID)
         }
 
         /**
